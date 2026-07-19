@@ -39,6 +39,8 @@ export async function signup(req, res) {
       profilePic: randonAvatar,
     });
 
+    await newUser.save();
+
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
