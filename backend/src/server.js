@@ -1,6 +1,8 @@
 import express from "express";
-
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.get("/api/auth/signup", (req, res) => {
   res.send("Signup Route");
@@ -15,6 +17,6 @@ app.get("/api/auth/logout", (req, res) => {
 });
 
 
-app.listen(5000, () => {
-  console.log("server is running on port 5000");
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
 });
