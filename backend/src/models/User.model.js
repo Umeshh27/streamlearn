@@ -11,8 +11,17 @@ const userSchema = new mongoose.Schema({
   },
   Password: {
     type: String,
-    required: true
+    required: true,
+    minlength: 6
   },
+  bio: {
+    type: String,
+    default: ""
+  },
+  profilePic: {
+    type: String,
+    default: ""
+  }
 },{
   timestamps: true,
 });
