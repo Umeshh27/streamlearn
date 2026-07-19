@@ -1,4 +1,5 @@
 import User from "../models/User.model.js";
+import jwt from "jsonwebtoken";
 
 export async function signup(req, res) {
   const { email, password, fullName } = req.body;
@@ -35,6 +36,8 @@ export async function signup(req, res) {
       Password: password,
       profilePic:randonAvatar
     });
+
+    const token= jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
   } catch (error) {}
 }
