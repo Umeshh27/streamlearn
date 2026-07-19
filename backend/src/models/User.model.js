@@ -55,13 +55,16 @@ const userSchema = new mongoose.Schema(
 const User = mongoose.model("User", userSchema);
 //pre hook
 userSchema.pre("save", async function (next) {
- try {
-  const salt=await bcrypt.genSalt(10);
-  this.Password=await bcrypt.hash(this.Password,salt);
-  next();
- } catch (error) {
-  next(error);
- }
-})
+  if (!this.isModified("Password")) {
+    return next();
+  }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.Password = await bcrypt.hash(this.Password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default User;
