@@ -59,9 +59,46 @@ export async function signup(req, res) {
 }
 
 export async function login(req, res) {
-  res.send("Login Route");
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Please provide both email and password" });
+    }
+
+    const user = await User.findOne({ Email: email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const isPasswordCorrect = await user.matchPassword(password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+      secure: true,
+      sameSite: "strict",
+    });
+    res.status(200).json({ success: true, user: user });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export async function logout(req, res) {
-  res.send("Logout Route");
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: true
+  });
+  res.status(200).json({ message: "Logged out successfully" });
 }
