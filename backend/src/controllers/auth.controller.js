@@ -49,8 +49,11 @@ export async function signup(req, res) {
       secure: true,
       sameSite: "strict",
     });
-    res.status(201).json({ success: true, user: newUser});
-  } catch (error) {}
+    res.status(201).json({ success: true, user: newUser });
+  } catch (error) {
+    console.error("Error during signup:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export async function login(req, res) {
