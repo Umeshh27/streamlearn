@@ -1,0 +1,67 @@
+### Node
+# dependencies
+node_modules/
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Build outputs
+dist/
+build/
+out/
+.vite/
+.cache/
+
+### Env files
+# local env files (ignore secrets) but keep example files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+### TypeScript
+*.tsbuildinfo
+
+### Logs / runtime files
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+### Coverage
+coverage/
+coverage-final.json
+
+### OS generated files
+.DS_Store
+Thumbs.db
+
+### IDE / editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+### JetBrains
+*.iml
+
+### Yarn v2/v3
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+### pnpm
+.pnpm-store/
+
+### Misc
+*.tgz
+.env.test
+.env.production
+.env.development
