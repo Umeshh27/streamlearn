@@ -1,5 +1,42 @@
+import User from "../models/User.model.js";
+
 export async function signup(req, res) {
-  res.send("SignUp Route");
+  const { email, password, fullName } = req.body;
+
+  try {
+    if (!email || !password || !fullName) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields" });
+    }
+
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists,Please Use a Different Email" });
+    }
+
+    const idx=Math.floor(Math.random()*100)+1; // Generate a random number between 1 and 100
+    const randonAvatar=`https://avatarapi.runflare.run/public/${idx}.png`;
+
+    const newUser = new User({
+      FullName: fullName,
+      Email: email,
+      Password: password,
+      profilePic:randonAvatar
+    });
+
+  } catch (error) {}
 }
 
 export async function login(req, res) {
