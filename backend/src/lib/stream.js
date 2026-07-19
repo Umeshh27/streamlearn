@@ -1,4 +1,4 @@
-import { streamChat } from "stream-chat";
+import {  StreamChat } from "stream-chat";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -11,11 +11,11 @@ if (!apiKey || !apiSecret) {
   );
 }
 
-const StreamClient = streamChat.getInstance(apiKey, apiSecret);
+const StreamClient = StreamChat.getInstance(apiKey, apiSecret);
 
 export const upsertStreamUser = async (userData) => {
   try {
-    await StreamClient.upsertUser([userData]);
+    await StreamClient.upsertUser(userData);
     return userData;
   } catch (error) {
     console.error("Error upserting Stream user:", error);
@@ -23,3 +23,4 @@ export const upsertStreamUser = async (userData) => {
 };
 
 const generateStreamToken = (userId) => {};
+
