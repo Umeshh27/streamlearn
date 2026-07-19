@@ -24,21 +24,32 @@ export async function signup(req, res) {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists,Please Use a Different Email" });
+      return res
+        .status(400)
+        .json({ message: "Email already exists,Please Use a Different Email" });
     }
 
-    const idx=Math.floor(Math.random()*100)+1; // Generate a random number between 1 and 100
-    const randonAvatar=`https://avatarapi.runflare.run/public/${idx}.png`;
+    const idx = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 100
+    const randonAvatar = `https://avatarapi.runflare.run/public/${idx}.png`;
 
     const newUser = new User({
       FullName: fullName,
       Email: email,
       Password: password,
-      profilePic:randonAvatar
+      profilePic: randonAvatar,
     });
 
-    const token= jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+      secure: true,
+      sameSite: "strict",
+    });
+    res.status(201).json({ success: true, user: newUser});
   } catch (error) {}
 }
 
