@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -50,3 +51,17 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+const User = mongoose.model("User", userSchema);
+//pre hook
+userSchema.pre("save", async function (next) {
+ try {
+  const salt=await bcrypt.genSalt(10);
+  this.Password=await bcrypt.hash(this.Password,salt);
+  next();
+ } catch (error) {
+  next(error);
+ }
+})
+
+export default User;
