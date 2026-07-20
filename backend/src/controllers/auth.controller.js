@@ -2,7 +2,6 @@ import { upsertStreamUser } from "../lib/stream.js";
 import User from "../models/User.model.js";
 import jwt from "jsonwebtoken";
 
-
 export async function signup(req, res) {
   const { email, password, fullName } = req.body;
 
@@ -39,7 +38,6 @@ export async function signup(req, res) {
       Email: email,
       Password: password,
       profilePic: randonAvatar,
-      
     });
 
     await newUser.save();
@@ -117,7 +115,49 @@ export async function logout(req, res) {
   res.status(200).json({ message: "Logged out successfully" });
 }
 
-
 export async function onboard(req, res) {
-  
+  try {
+    const userId = req.user._id;
+    const {
+      fullName,
+      bio,
+      profilePic,
+      nativeLanguage,
+      learningLanguage,
+      location,
+    } = req.body;
+    if (
+      !fullName ||
+      !bio ||
+      !profilePic ||
+      !nativeLanguage ||
+      !learningLanguage ||
+      !location
+    ) {
+      return res.status(400).json({
+        message: "Please provide all required fields",
+        missingFields: {
+          fullName: !fullName,
+          bio: !bio,
+          profilePic: !profilePic,
+          nativeLanguage: !nativeLanguage,
+          learningLanguage: !learningLanguage,
+          location: !location,
+        },
+      });
+    }
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      ...req.body,
+      isOnboarded: true,
+    },{ new: true });
+    res.status(200).json({ message: "Onboarding completed successfully" });
+
+    if(!updatedUser){
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({success:true, user: updatedUser});
+  } catch (error) {
+    console.error("Error during onboarding:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
