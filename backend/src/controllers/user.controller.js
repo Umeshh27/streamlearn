@@ -120,5 +120,28 @@ export async function acceptFriendRequest(req, res) {
       $addToSet: { friends: friendRequest.sender },
     });
     res.status(200).json({ message: "Friend request accepted successfully" });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error accepting friend request:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function getFriendRequests(req, res) {
+  try{
+    const incomingRequests = await FriendRequest.find({
+      recipient: req.user._id,
+      status: "pending"
+  }).populate("sender", "FullName profilePic nativeLanguage learningLanguage location");
+
+  const acceptedRequests = await FriendRequest.find({
+    sender: req.user._id,
+    status: "accepted"
+  }).populate("recipient","FullName profilePic");
+
+  res.status(200).json({ incomingRequests, acceptedRequests });
+}
+  catch (error) {
+    console.error("Error fetching friend requests:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
