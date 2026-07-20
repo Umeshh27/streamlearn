@@ -159,7 +159,7 @@ export async function onboard(req, res) {
         ...req.body,
         isOnboarded: true,
       },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedUser) {
