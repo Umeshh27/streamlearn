@@ -23,14 +23,15 @@ export async function signup(req, res) {
       return res.status(400).json({ message: "Invalid email format" });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ Email: email });
+
     if (existingUser) {
       return res
         .status(400)
         .json({ message: "Email already exists,Please Use a Different Email" });
     }
 
-    const idx = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 100
+    const idx = Math.floor(Math.random() * 100) + 1;
     const randonAvatar = `https://avatarapi.runflare.run/public/${idx}.png`;
 
     const newUser = new User({
@@ -59,10 +60,11 @@ export async function signup(req, res) {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
     });
+
     res.status(201).json({ success: true, user: newUser });
   } catch (error) {
     console.error("Error during signup:", error);
@@ -81,11 +83,13 @@ export async function login(req, res) {
     }
 
     const user = await User.findOne({ Email: email });
+
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isPasswordCorrect = await user.matchPassword(password);
+
     if (!isPasswordCorrect) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -96,11 +100,12 @@ export async function login(req, res) {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
     });
-    res.status(200).json({ success: true, user: user });
+
+    res.status(200).json({ success: true, user });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -112,12 +117,14 @@ export async function logout(req, res) {
     httpOnly: true,
     secure: true,
   });
+
   res.status(200).json({ message: "Logged out successfully" });
 }
 
 export async function onboard(req, res) {
   try {
     const userId = req.user._id;
+
     const {
       fullName,
       bio,
@@ -126,36 +133,44 @@ export async function onboard(req, res) {
       learningLanguage,
       location,
     } = req.body;
+
     if (
       !fullName ||
       !bio ||
-      !profilePic ||
       !nativeLanguage ||
       !learningLanguage ||
       !location
     ) {
       return res.status(400).json({
         message: "Please provide all required fields",
-        missingFields: {
-          fullName: !fullName,
-          bio: !bio,
-          profilePic: !profilePic,
-          nativeLanguage: !nativeLanguage,
-          learningLanguage: !learningLanguage,
-          location: !location,
-        },
+        missingFields: [
+          !fullName && "fullName",
+          !bio && "bio",
+          !nativeLanguage && "nativeLanguage",
+          !learningLanguage && "learningLanguage",
+          !location && "location",
+        ].filter(Boolean),
       });
     }
-    const updatedUser = await User.findByIdAndUpdate(userId, {
-      ...req.body,
-      isOnboarded: true,
-    },{ new: true });
-    res.status(200).json({ message: "Onboarding completed successfully" });
 
-    if(!updatedUser){
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        ...req.body,
+        isOnboarded: true,
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({success:true, user: updatedUser});
+
+    res.status(200).json({
+      success: true,
+      message: "Onboarding completed successfully",
+      user: updatedUser,
+    });
   } catch (error) {
     console.error("Error during onboarding:", error);
     res.status(500).json({ message: "Internal server error" });
