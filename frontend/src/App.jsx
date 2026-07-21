@@ -9,7 +9,6 @@ import CallPage from "./pages/CallPage.jsx";
 import NotificationPage from "./pages/NotificationPage.jsx";
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { axiosInstance } from "./lib/axios.js";
 
 const App = () => {
