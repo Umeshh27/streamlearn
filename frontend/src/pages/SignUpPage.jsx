@@ -1,6 +1,9 @@
 import React from "react";
 import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { signup } from "../lib/api.js";
 
 const SignUpPage = () => {
   const [signUpData, setSignUpData] = React.useState({
@@ -8,21 +11,21 @@ const SignUpPage = () => {
     email: "",
     password: "",
   });
-  const { mutate,isPending,error } = useMutation(
-    {
-      mutationFn: async () => {
-        const res = await axiosInstance.post("/auth/signup", signUpData);
-        return res.data;
-      },
-      onSuccess:()=>{
-        
-      }
-    }
-  );
+  const queryClient = useQueryClient();
+  const { mutate: signupMutation, isPending, error } = useMutation({
+    mutationFn: signup,
+    onSuccess: () => {
+      toast.success("Account created successfully!");
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || "Failed to create account");
+    },
+  });
 
   const handleSignup = (e) => {
     e.preventDefault();
-    
+    signupMutation(signUpData);
   };
 
   return (
@@ -39,6 +42,15 @@ const SignUpPage = () => {
             <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
             StreamLearn </span>
+
+            {/* error */}
+            {error && (
+              <div className="alert alert-error shadow-lg mt-4">
+                <div>
+                  <span>{error.response?.data?.message || "An error occurred"}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="w-full">
@@ -91,7 +103,7 @@ const SignUpPage = () => {
                     </label>
 
                     <input
-                      type="text"
+                      type="password"
                       placeholder="Enter your Password"
                       className="input input-bordered w-full"
                       value={signUpData.password}
@@ -120,7 +132,7 @@ const SignUpPage = () => {
                   </div>
                 </div>
                 <button type="submit" className="btn btn-primary w-full">
-                  Create Account
+                { isPending ? "Signing Up..." : "Create Account" }
                 </button>
 
                 <div className="text-center mt-4">
@@ -141,7 +153,7 @@ const SignUpPage = () => {
       <div className="max-w-md p-8">
         <div className="relative aspect-square max-w-sm mx-auto">
           <img
-            src="../public/Video call-bro.png"
+            src="/Video-call-bro.png"
             alt="Sign Up"
             />
         </div>
