@@ -20,6 +20,7 @@ const SignUpPage = () => {
       data-theme="forest"
     >
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
+
       {/* // Left side  */}
       <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
           {/* logo */}
@@ -45,7 +46,7 @@ const SignUpPage = () => {
 
                     <input
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder="Enter your Full name"
                       className="input input-bordered w-full"
                       value={signUpData.fullName}
                       onChange={(e) =>
@@ -122,6 +123,25 @@ const SignUpPage = () => {
               </div>
             </form>
           </div>
+      </div>
+
+      {/* // Right side */}
+      <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center ">
+      <div className="max-w-md p-8">\
+        <div className="relative aspect-square max-w-sm mx-auto">
+          <img
+            src="../public/Video call-bro.png"
+            alt="Sign Up"
+            />
+        </div>
+        <div className="text-center space-y-3 mt-6">
+          <h2 className="text-xl font-semibold">Connect with language partners worldwide!</h2>
+          <p className="text-sm opacity-70">
+            practice conversations, share experiences, and enhance your language skills in a supportive community.
+          </p>
+        </div>
+      </div>
+
       </div>
       </div>
     </div>
