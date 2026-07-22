@@ -27,7 +27,7 @@ const SignUpPage = () => {
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
             StreamLearn </span>
           </div>
-      
+
           <div className="w-full">
             <form onSubmit={handleSignup}>
               <div className="space-y-4">
@@ -69,6 +69,28 @@ const SignUpPage = () => {
                       }
                       required
                     />
+                  </div>
+
+                  
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Password</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      placeholder="Enter your Password"
+                      className="input input-bordered w-full"
+                      value={signUpData.password}
+                      onChange={(e) =>
+                        setSignUpData({ ...signUpData, password: e.target.value })
+                      }
+                      required
+                    />
+
+                    <p className="text-xm opacity-70 mt-1">
+                      Password must be at least 6 characters long.
+                    </p>
                   </div>
                 </div>
               </div>
