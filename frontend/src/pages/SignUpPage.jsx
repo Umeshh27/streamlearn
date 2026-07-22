@@ -8,6 +8,17 @@ const SignUpPage = () => {
     email: "",
     password: "",
   });
+  const { mutate,isPending,error } = useMutation(
+    {
+      mutationFn: async () => {
+        const res = await axiosInstance.post("/auth/signup", signUpData);
+        return res.data;
+      },
+      onSuccess:()=>{
+        
+      }
+    }
+  );
 
   const handleSignup = (e) => {
     e.preventDefault();
