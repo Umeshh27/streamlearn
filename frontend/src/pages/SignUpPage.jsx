@@ -27,7 +27,7 @@ const SignUpPage = () => {
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
             StreamLearn </span>
           </div>
-
+      
           <div className="w-full">
             <form onSubmit={handleSignup}>
               <div className="space-y-4">
