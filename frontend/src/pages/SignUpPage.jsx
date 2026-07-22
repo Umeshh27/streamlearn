@@ -126,7 +126,7 @@ const SignUpPage = () => {
       </div>
 
       {/* // Right side */}
-      <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center ">
+      <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center bg-primary/10">
       <div className="max-w-md p-8">
         <div className="relative aspect-square max-w-sm mx-auto">
           <img
