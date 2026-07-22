@@ -53,6 +53,23 @@ const SignUpPage = () => {
                       required
                     />
                   </div>
+
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Email</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      placeholder="Enter your Email"
+                      className="input input-bordered w-full"
+                      value={signUpData.email}
+                      onChange={(e) =>
+                        setSignUpData({ ...signUpData, email: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
                 </div>
               </div>
             </form>
