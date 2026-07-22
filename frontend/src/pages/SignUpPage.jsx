@@ -43,14 +43,6 @@ const SignUpPage = () => {
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
             StreamLearn </span>
 
-            {/* error */}
-            {error && (
-              <div className="alert alert-error shadow-lg mt-4">
-                <div>
-                  <span>{error.response?.data?.message || "An error occurred"}</span>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="w-full">

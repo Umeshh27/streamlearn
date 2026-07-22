@@ -14,17 +14,27 @@ import { axiosInstance } from "./lib/axios.js";
 const App = () => {
   //tanstack query is used for data fetching and caching in react applications. It provides a simple and efficient way to manage server state, handle caching, and perform background updates. It helps to reduce the amount of boilerplate code needed for data fetching and provides a better user experience by keeping the UI in sync with the server state.
 
-  const {
-    data: authData,
-  } = useQuery({
+  const { data: authData, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/auth/me");
-      return res.data;
+      try {
+        const res = await axiosInstance.get("/auth/me");
+        return res.data;
+      } catch (error) {
+        return null;
+      }
     },
     retry: false, // Disable retrying on failure
   });
   const authUser = authData?.user;
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center" data-theme="night">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
 
 
