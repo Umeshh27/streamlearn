@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "./lib/axios.js";
 import { getAuthUser } from "./lib/api.js";
 import useAuthUser from "./hooks/useAuthUser.js";
+import Layout from "./components/Layout.jsx";
 
 const App = () => {
   //tanstack query is used for data fetching and caching in react applications. It provides a simple and efficient way to manage server state, handle caching, and perform background updates. It helps to reduce the amount of boilerplate code needed for data fetching and provides a better user experience by keeping the UI in sync with the server state.
@@ -31,11 +32,13 @@ const App = () => {
 
 
   return (
-    <div className="h-screen" data-theme="night">
+    <div className="h-screen" data-theme="forest">
       <Routes>
   <Route
     path="/"
-    element={isAuthenticated && isOnboarded ? (<HomePage/>):(
+    element={isAuthenticated && isOnboarded ? (<Layout showSidebar={true}>
+      <HomePage/>
+    </Layout>):(
       <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
     )}
   />
