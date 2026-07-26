@@ -32,13 +32,13 @@ export async function signup(req, res) {
     }
 
     const idx = Math.floor(Math.random() * 100) + 1;
-    const randonAvatar = `https://avatarapi.runflare.run/public/${idx}.png`;
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
 
     const newUser = new User({
       FullName: fullName,
       Email: email,
       Password: password,
-      profilePic: randonAvatar,
+      profilePic: randomAvatar,
     });
 
     await newUser.save();

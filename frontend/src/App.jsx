@@ -11,12 +11,12 @@ import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "./lib/axios.js";
 import { getAuthUser } from "./lib/api.js";
-import UseAuthUser from "./hooks/UseAuthUser.js";
+import useAuthUser from "./hooks/useAuthUser.js";
 
 const App = () => {
   //tanstack query is used for data fetching and caching in react applications. It provides a simple and efficient way to manage server state, handle caching, and perform background updates. It helps to reduce the amount of boilerplate code needed for data fetching and provides a better user experience by keeping the UI in sync with the server state.
 
-  const { isLoading, data: authUser, error } = UseAuthUser();
+  const { isLoading, data: authUser, error } = useAuthUser();
   const isAuthenticated = Boolean(authUser); // Check if authUser is not null or undefined
   const isOnboarded = authUser?.isOnboarded ?? authUser?.isOnBoarded; // Check if the user is onboarded
 

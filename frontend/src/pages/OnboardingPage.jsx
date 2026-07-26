@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuthUser } from '../hooks/useAuthUser.js'
-import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { completeOnboarding } from '../lib/api.js'
@@ -13,17 +12,12 @@ import {
 } from 'lucide-react'
 import { LANGUAGES } from '../constants/index.js'
 
-const handleRandomAvatar = () => {
-   
-};
-
-
 function OnboardingPage() {
-  const {authUser}= useAuthUser()
+  const { authUser } = useAuthUser();
   const queryClient = useQueryClient();
 
   const [formState, setFormState] = useState({
-    fullName: authUser?.fullName || '',
+    fullName: authUser?.FullName || authUser?.fullName || '',
     bio: authUser?.bio || '',
     nativeLanguage: authUser?.nativeLanguage || '',
     learningLanguage: authUser?.learningLanguage || '',
@@ -31,22 +25,32 @@ function OnboardingPage() {
     profilePic: authUser?.profilePic || '',
   });
 
-  const {mutate:onboardingMutation,isPending}=useMutation({
+  const { mutate: onboardingMutation, isPending } = useMutation({
     mutationFn: completeOnboarding,
     onSuccess: () => {
       toast.success("Onboarding completed successfully!");
       queryClient.invalidateQueries({ queryKey: ['authUser'] });
-}
-})
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "An error occurred during onboarding.");
+    },
+  });
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  onboardingMutation(formState);
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onboardingMutation(formState);
+  };
 
-const handleRandomAvatar = () => {}
+  const handleRandomAvatar = () => {
+    const idx = Math.floor(Math.random() * 100) + 1; // 1-100 included
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
+
+    setFormState({ ...formState, profilePic: randomAvatar });
+    toast.success("Random profile picture generated!");
+  };
+
   return (
-     <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
       <div className="card bg-base-200 w-full max-w-3xl shadow-xl">
         <div className="card-body p-6 sm:p-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">Complete Your Profile</h1>
