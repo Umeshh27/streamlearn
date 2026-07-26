@@ -9,7 +9,13 @@ const UseAuthUser = () => {
     retry: false, // Disable retrying on failure
   });
 
-  return {isLoading: authUser.isLoading, data: authUser.data?.user, error: authUser.error};
+  return {
+    isLoading: authUser.isLoading,
+    data: authUser.data?.user,
+    authUser: authUser.data?.user,
+    error: authUser.error,
+  };
 }
 
-export default UseAuthUser
+export const useAuthUser = UseAuthUser;
+export default UseAuthUser;

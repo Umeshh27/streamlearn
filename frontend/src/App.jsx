@@ -17,6 +17,8 @@ const App = () => {
   //tanstack query is used for data fetching and caching in react applications. It provides a simple and efficient way to manage server state, handle caching, and perform background updates. It helps to reduce the amount of boilerplate code needed for data fetching and provides a better user experience by keeping the UI in sync with the server state.
 
   const { isLoading, data: authUser, error } = UseAuthUser();
+  const isAuthenticated = Boolean(authUser); // Check if authUser is not null or undefined
+  const isOnboarded = authUser?.isOnboarded ?? authUser?.isOnBoarded; // Check if the user is onboarded
 
   if (isLoading) {
     return (
@@ -33,37 +35,39 @@ const App = () => {
       <Routes>
   <Route
     path="/"
-    element={authUser ? <HomePage /> : <Navigate to="/login" />}
+    element={isAuthenticated && isOnboarded ? (<HomePage/>):(
+      <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+    )}
   />
 
   <Route
     path="/signup"
-    element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+    element={!isAuthenticated ? <SignUpPage /> : <Navigate to="/" />}
   />
 
   <Route
     path="/login"
-    element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+    element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}
   />
 
   <Route
     path="/notifications"
-    element={authUser ? <NotificationPage /> : <Navigate to="/login" />}
+    element={isAuthenticated ? <NotificationPage /> : <Navigate to="/login" />}
   />
 
   <Route
     path="/call"
-    element={authUser ? <CallPage /> : <Navigate to="/login" />}
+    element={isAuthenticated ? <CallPage /> : <Navigate to="/login" />}
   />
 
   <Route
     path="/chat"
-    element={authUser ? <ChatPage /> : <Navigate to="/login" />}
+    element={isAuthenticated ? <ChatPage /> : <Navigate to="/login" />}
   />
 
   <Route
     path="/onboarding"
-    element={authUser ? <OnboardingPage /> : <Navigate to="/login" />}
+    element={isAuthenticated && !isOnboarded ? <OnboardingPage /> : <Navigate to="/login" />}
   />
 </Routes>
       <Toaster />
