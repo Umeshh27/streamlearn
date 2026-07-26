@@ -5,7 +5,6 @@ import { ShipWheel as ShipWheelIcon } from 'lucide-react'
 import { login } from '../lib/api.js'
 import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
-import useLogin from '../hooks/useLogin.js'
 
 function LoginPage() {
 
@@ -47,12 +46,6 @@ function LoginPage() {
             </span>
           </div>
 
-          {/* ERROR MESSAGE DISPLAY */}
-          {error && (
-            <div className="alert alert-error mb-4">
-              <span>{error.response?.data?.message || error.message}</span>
-            </div>
-          )}
 
           <div className="w-full">
             <form onSubmit={handleLogin}>
