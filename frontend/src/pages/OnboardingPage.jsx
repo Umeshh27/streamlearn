@@ -12,7 +12,10 @@ import {
   Loader as LoaderIcon,
 } from 'lucide-react'
 import { LANGUAGES } from '../constants/index.js'
-const handleRandomAvatar = () => {};
+
+const handleRandomAvatar = () => {
+   
+};
 
 
 function OnboardingPage() {
