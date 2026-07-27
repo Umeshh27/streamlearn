@@ -3,6 +3,7 @@ import useAuthUser from "../hooks/useAuthUser";
 import { Bell as BellIcon, LogOut as LogOutIcon, ShipWheel as ShipWheelIcon } from "lucide-react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { logout } from "../lib/api.js";
+import ThemeSelector from "./ThemeSelector";
 
 
 
@@ -40,6 +41,8 @@ const Navbar = () => {
                 <BellIcon className="h-6 w-6 text-base-content opacity-70" />
               </button>
             </Link>
+
+            <ThemeSelector />
 
             <div className="avatar">
               <div className="w-9 rounded-full">
