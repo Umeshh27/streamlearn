@@ -23,7 +23,7 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center" data-theme="night">
+      <div className="h-screen flex items-center justify-center" data-theme="winter">
         <span className="loading loading-spinner loading-lg text-primary"></span>
       </div>
     );

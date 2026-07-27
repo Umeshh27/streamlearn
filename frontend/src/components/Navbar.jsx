@@ -4,6 +4,8 @@ import { Bell as BellIcon, LogOut as LogOutIcon, ShipWheel as ShipWheelIcon } fr
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { logout } from "../lib/api.js";
 
+
+
 const Navbar = () => {
   const { authUser } = useAuthUser();
   const location = useLocation();
@@ -13,6 +15,7 @@ const Navbar = () => {
   const { mutate: logoutMutation } = useMutation({
     mutationFn: logout,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+    onError: () => toast.error("Failed to log out."),
   });
 
   return (
