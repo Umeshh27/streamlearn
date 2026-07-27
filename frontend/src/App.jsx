@@ -23,6 +23,8 @@ const App = () => {
   const isAuthenticated = Boolean(authUser); // Check if authUser is not null or undefined
   const isOnboarded = authUser?.isOnboarded ?? authUser?.isOnBoarded; // Check if the user is onboarded
 
+  
+
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center" data-theme="winter">
