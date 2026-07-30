@@ -23,7 +23,9 @@ export async function signup(req, res) {
       return res.status(400).json({ message: "Invalid email format" });
     }
 
-    const existingUser = await User.findOne({ Email: email });
+    const existingUser = await User.findOne({
+      $or: [{ email: email }, { Email: email }],
+    });
 
     if (existingUser) {
       return res
@@ -35,9 +37,9 @@ export async function signup(req, res) {
     const randomAvatar = `https://avatars.rentcircle.ph/public/${idx}.png`;
 
     const newUser = new User({
-      FullName: fullName,
-      Email: email,
-      Password: password,
+      fullName,
+      email,
+      password,
       profilePic: randomAvatar,
     });
 
@@ -46,10 +48,10 @@ export async function signup(req, res) {
     try {
       await upsertStreamUser({
         id: newUser._id.toString(),
-        name: newUser.FullName,
+        name: newUser.fullName || newUser.FullName,
         image: newUser.profilePic || "",
       });
-      console.log(`Stream user created for ${newUser.FullName}`);
+      console.log(`Stream user created for ${newUser.fullName || newUser.FullName}`);
     } catch (error) {
       console.error("Error upserting Stream user:", error);
     }
@@ -82,7 +84,9 @@ export async function login(req, res) {
         .json({ message: "Please provide both email and password" });
     }
 
-    const user = await User.findOne({ Email: email });
+    const user = await User.findOne({
+      $or: [{ email: email }, { Email: email }],
+    });
 
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -157,7 +161,9 @@ export async function onboard(req, res) {
       userId,
       {
         ...req.body,
+        fullName: fullName,
         FullName: fullName,
+        isOnboarded: true,
         isOnBoarded: true,
       },
       { new: true },
@@ -169,11 +175,11 @@ export async function onboard(req, res) {
 
     try {
       await upsertStreamUser({
-      id: updatedUser._id.toString(),
-      name: updatedUser.FullName,
-      image: updatedUser.profilePic || "",
-    })
-    console.log(`Stream user updated after onboarding: ${updatedUser.FullName}`);
+        id: updatedUser._id.toString(),
+        name: updatedUser.fullName || updatedUser.FullName,
+        image: updatedUser.profilePic || "",
+      });
+      console.log(`Stream user updated after onboarding: ${updatedUser.fullName || updatedUser.FullName}`);
     } catch (streamError) {
       console.error("Error updating Stream user during onboarding:", streamError);
     }
