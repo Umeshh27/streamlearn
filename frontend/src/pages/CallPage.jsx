@@ -9,10 +9,10 @@ import {
   StreamVideoClient,
   StreamCall,
   CallControls,
-  SpeakerLayout,
   StreamTheme,
   CallingState,
   useCallStateHooks,
+  ParticipantView,
 } from "@stream-io/video-react-sdk";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -46,12 +46,12 @@ const CallPage = () => {
         console.log("Initializing Stream video client...");
 
         const user = {
-          id: authUser._id,
+          id: authUser._id || authUser.id,
           name: authUser.fullName,
           image: authUser.profilePic,
         };
 
-        videoClient = new StreamVideoClient({
+        videoClient = StreamVideoClient.getOrCreateInstance({
           apiKey: STREAM_API_KEY,
           user,
           token: tokenData.token,
@@ -59,7 +59,9 @@ const CallPage = () => {
 
         callInstance = videoClient.call("default", callId);
 
-        await callInstance.join({ create: true });
+        if (callInstance.state.callingState !== CallingState.JOINED) {
+          await callInstance.join({ create: true });
+        }
 
         console.log("Joined call successfully");
 
@@ -79,11 +81,8 @@ const CallPage = () => {
       if (callInstance) {
         callInstance.leave().catch((err) => console.error("Error leaving call:", err));
       }
-      if (videoClient) {
-        videoClient.disconnectUser().catch((err) => console.error("Error disconnecting video client:", err));
-      }
     };
-  }, [tokenData, authUser, callId]);
+  }, [tokenData?.token, authUser?._id, callId]);
 
   if (isLoading || isConnecting) return <PageLoader />;
 
@@ -107,8 +106,9 @@ const CallPage = () => {
 };
 
 const CallContent = ({ callId, authUser }) => {
-  const { useCallCallingState } = useCallStateHooks();
+  const { useCallCallingState, useParticipants } = useCallStateHooks();
   const callingState = useCallCallingState();
+  const participants = useParticipants();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -124,10 +124,34 @@ const CallContent = ({ callId, authUser }) => {
     }
   }, [callingState, navigate, callId, authUser]);
 
+  // Deduplicate participants by userId so each user gets exactly 1 box
+  const uniqueParticipants = [];
+  const seenUserIds = new Set();
+
+  for (const p of participants) {
+    if (p.userId && !seenUserIds.has(p.userId)) {
+      seenUserIds.add(p.userId);
+      uniqueParticipants.push(p);
+    }
+  }
+
   return (
     <StreamTheme>
-      <SpeakerLayout />
-      <CallControls />
+      <div className="w-full h-full flex flex-col items-center justify-between p-4 bg-base-300">
+        <div className="flex-1 w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 gap-4 items-center justify-center my-auto">
+          {uniqueParticipants.map((participant) => (
+            <div
+              key={participant.userId}
+              className="relative w-full h-[65vh] rounded-2xl overflow-hidden shadow-2xl bg-neutral"
+            >
+              <ParticipantView participant={participant} className="w-full h-full object-cover" />
+            </div>
+          ))}
+        </div>
+        <div className="py-4">
+          <CallControls />
+        </div>
+      </div>
     </StreamTheme>
   );
 };
