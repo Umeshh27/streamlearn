@@ -37,31 +37,35 @@ const ChatPage = () => {
   });
 
   useEffect(() => {
+    let client;
     const initChat = async () => {
-      if (!tokenData?.token || !authUser) return;
+      if (!tokenData?.token || !authUser || !targetUserId) return;
 
       try {
         console.log("Initializing stream chat client...");
 
-        const client = StreamChat.getInstance(STREAM_API_KEY);
+        client = StreamChat.getInstance(STREAM_API_KEY);
 
-        await client.connectUser(
-          {
-            id: authUser._id,
-            name: authUser.fullName,
-            image: authUser.profilePic,
-          },
-          tokenData.token
-        );
+        if (client.userID && client.userID !== (authUser._id || authUser.id)) {
+          await client.disconnectUser();
+        }
 
-        const channelId = [authUser._id, targetUserId].sort().join("-");
+        if (!client.userID) {
+          await client.connectUser(
+            {
+              id: authUser._id || authUser.id,
+              name: authUser.fullName || authUser.FullName,
+              image: authUser.profilePic || "",
+            },
+            tokenData.token
+          );
+        }
 
-        // you and me
-        // if i start the chat => channelId: [myId, yourId]
-        // if you start the chat => channelId: [yourId, myId]  => [myId,yourId]
+        const currentId = authUser._id || authUser.id;
+        const channelId = [currentId, targetUserId].sort().join("-");
 
         const currChannel = client.channel("messaging", channelId, {
-          members: [authUser._id, targetUserId],
+          members: [currentId, targetUserId],
         });
 
         await currChannel.watch();
@@ -77,6 +81,12 @@ const ChatPage = () => {
     };
 
     initChat();
+
+    return () => {
+      if (client) {
+        client.disconnectUser().catch((err) => console.error("Error disconnecting user", err));
+      }
+    };
   }, [tokenData, authUser, targetUserId]);
 
   const handleVideoCall = () => {
