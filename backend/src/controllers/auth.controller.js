@@ -46,7 +46,8 @@ export async function signup(req, res) {
       console.log("Error creating Stream user:", error);
     }
 
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET_KEY, {
+    const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+    const token = jwt.sign({ userId: newUser._id }, jwtSecret, {
       expiresIn: "7d",
     });
 
@@ -78,7 +79,8 @@ export async function login(req, res) {
     const isPasswordCorrect = await user.matchPassword(password);
     if (!isPasswordCorrect) return res.status(401).json({ message: "Invalid email or password" });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
+    const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY;
+    const token = jwt.sign({ userId: user._id }, jwtSecret, {
       expiresIn: "7d",
     });
 
