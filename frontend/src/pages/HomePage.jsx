@@ -8,6 +8,7 @@ import {
 } from "../lib/api";
 import { Link } from "react-router";
 import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { capitialize } from "../lib/utils";
 
@@ -33,18 +34,28 @@ const HomePage = () => {
     queryFn: getOutgoingFriendReqs,
   });
 
-  const { mutate: sendRequestMutation, isPending } = useMutation({
+  const { mutate: sendRequestMutation, isPending, variables: pendingUserId } = useMutation({
     mutationFn: sendFriendRequest,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
+    onSuccess: () => {
+      toast.success("Friend request sent successfully!");
+      queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to send friend request");
+    },
   });
 
   useEffect(() => {
     const outgoingIds = new Set();
     if (outgoingFriendReqs && outgoingFriendReqs.length > 0) {
       outgoingFriendReqs.forEach((req) => {
-        outgoingIds.add(req.recipient._id);
+        if (req.recipient && req.recipient._id) {
+          outgoingIds.add(req.recipient._id);
+        }
       });
       setOutgoingRequestsIds(outgoingIds);
+    } else {
+      setOutgoingRequestsIds(new Set());
     }
   }, [outgoingFriendReqs]);
 
@@ -100,6 +111,7 @@ const HomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedUsers.map((user) => {
                 const hasRequestBeenSent = outgoingRequestsIds.has(user._id);
+                const isThisUserPending = isPending && pendingUserId === user._id;
 
                 return (
                   <div
@@ -145,7 +157,12 @@ const HomePage = () => {
                         onClick={() => sendRequestMutation(user._id)}
                         disabled={hasRequestBeenSent || isPending}
                       >
-                        {hasRequestBeenSent ? (
+                        {isThisUserPending ? (
+                          <>
+                            <span className="loading loading-spinner loading-xs mr-2" />
+                            Sending...
+                          </>
+                        ) : hasRequestBeenSent ? (
                           <>
                             <CheckCircleIcon className="size-4 mr-2" />
                             Request Sent

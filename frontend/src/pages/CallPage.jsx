@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
@@ -9,10 +9,10 @@ import {
   StreamVideoClient,
   StreamCall,
   CallControls,
+  SpeakerLayout,
   StreamTheme,
   CallingState,
   useCallStateHooks,
-  ParticipantView,
 } from "@stream-io/video-react-sdk";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -26,6 +26,7 @@ const CallPage = () => {
   const [client, setClient] = useState(null);
   const [call, setCall] = useState(null);
   const [isConnecting, setIsConnecting] = useState(true);
+  const hasJoined = useRef(false);
 
   const { authUser, isLoading } = useAuthUser();
 
@@ -36,38 +37,36 @@ const CallPage = () => {
   });
 
   useEffect(() => {
-    let videoClient;
-    let callInstance;
-
     const initCall = async () => {
       if (!tokenData?.token || !authUser || !callId) return;
+      if (hasJoined.current) return;
 
       try {
+        hasJoined.current = true;
         console.log("Initializing Stream video client...");
 
         const user = {
-          id: authUser._id || authUser.id,
+          id: authUser._id,
           name: authUser.fullName,
           image: authUser.profilePic,
         };
 
-        videoClient = StreamVideoClient.getOrCreateInstance({
+        const videoClient = new StreamVideoClient({
           apiKey: STREAM_API_KEY,
           user,
           token: tokenData.token,
         });
 
-        callInstance = videoClient.call("default", callId);
+        const callInstance = videoClient.call("default", callId);
 
-        if (callInstance.state.callingState !== CallingState.JOINED) {
-          await callInstance.join({ create: true });
-        }
+        await callInstance.join({ create: true });
 
         console.log("Joined call successfully");
 
         setClient(videoClient);
         setCall(callInstance);
       } catch (error) {
+        hasJoined.current = false;
         console.error("Error joining call:", error);
         toast.error("Could not join the call. Please try again.");
       } finally {
@@ -76,23 +75,17 @@ const CallPage = () => {
     };
 
     initCall();
-
-    return () => {
-      if (callInstance) {
-        callInstance.leave().catch((err) => console.error("Error leaving call:", err));
-      }
-    };
-  }, [tokenData?.token, authUser?._id, callId]);
+  }, [tokenData, authUser, callId]);
 
   if (isLoading || isConnecting) return <PageLoader />;
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center bg-base-300">
-      <div className="relative w-full h-full flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center justify-center">
+      <div className="relative">
         {client && call ? (
           <StreamVideo client={client}>
             <StreamCall call={call}>
-              <CallContent callId={callId} authUser={authUser} />
+              <CallContent />
             </StreamCall>
           </StreamVideo>
         ) : (
@@ -105,53 +98,18 @@ const CallPage = () => {
   );
 };
 
-const CallContent = ({ callId, authUser }) => {
-  const { useCallCallingState, useParticipants } = useCallStateHooks();
+const CallContent = () => {
+  const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
-  const participants = useParticipants();
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (callingState === CallingState.LEFT) {
-      const currentUserId = authUser?._id || authUser?.id;
-      const targetUserId = callId?.split("-").find((id) => id !== currentUserId);
-
-      if (targetUserId) {
-        navigate(`/chat/${targetUserId}`);
-      } else {
-        navigate(-1);
-      }
-    }
-  }, [callingState, navigate, callId, authUser]);
-
-  // Deduplicate participants by userId so each user gets exactly 1 box
-  const uniqueParticipants = [];
-  const seenUserIds = new Set();
-
-  for (const p of participants) {
-    if (p.userId && !seenUserIds.has(p.userId)) {
-      seenUserIds.add(p.userId);
-      uniqueParticipants.push(p);
-    }
-  }
+  if (callingState === CallingState.LEFT) return navigate("/");
 
   return (
     <StreamTheme>
-      <div className="w-full h-full flex flex-col items-center justify-between p-4 bg-base-300">
-        <div className="flex-1 w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 gap-4 items-center justify-center my-auto">
-          {uniqueParticipants.map((participant) => (
-            <div
-              key={participant.userId}
-              className="relative w-full h-[65vh] rounded-2xl overflow-hidden shadow-2xl bg-neutral"
-            >
-              <ParticipantView participant={participant} className="w-full h-full object-cover" />
-            </div>
-          ))}
-        </div>
-        <div className="py-4">
-          <CallControls />
-        </div>
-      </div>
+      <SpeakerLayout />
+      <CallControls />
     </StreamTheme>
   );
 };
