@@ -127,13 +127,28 @@ const ChatPage = () => {
     }
   };
 
+  const handleChatContainerClick = (e) => {
+    const anchor = e.target.closest("a");
+    if (anchor && anchor.href) {
+      try {
+        const url = new URL(anchor.href);
+        if (url.pathname.startsWith("/call/")) {
+          e.preventDefault();
+          navigate(url.pathname);
+        }
+      } catch (err) {
+        // ignore non-standard URLs
+      }
+    }
+  };
+
   if (loading || !chatClient || !channel) return <ChatLoader />;
 
   return (
     <div className="h-[93vh]">
       <Chat client={chatClient}>
         <Channel channel={channel}>
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative" onClick={handleChatContainerClick}>
             <Window>
               <ChatHeader channel={channel} authUser={authUser} handleVideoCall={handleVideoCall} />
               <MessageList />
