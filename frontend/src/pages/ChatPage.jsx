@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
+import { VideoIcon } from "lucide-react";
 
 import {
   Channel,
-  ChannelHeader,
   Chat,
   MessageComposer,
   MessageList,
@@ -21,8 +21,47 @@ import CallButton from "../components/CallButton";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
+const ChatHeader = ({ channel, authUser, handleVideoCall }) => {
+  const currentUserId = authUser?._id || authUser?.id;
+  const members = channel?.state?.members ? Object.values(channel.state.members) : [];
+  const otherMember = members.find((m) => m.user?.id !== currentUserId)?.user;
+
+  const displayName = otherMember?.name || "Language Partner";
+  const displayImage = otherMember?.image || "";
+
+  return (
+    <div className="flex items-center justify-between px-6 py-3 bg-base-100 border-b border-base-300 w-full">
+      {/* LEFT: User Profile Image & Name */}
+      <div className="flex items-center gap-3">
+        <div className="avatar">
+          <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-1 overflow-hidden">
+            {displayImage ? (
+              <img src={displayImage} alt={displayName} className="object-cover w-full h-full" />
+            ) : (
+              <div className="bg-primary text-primary-content w-full h-full flex items-center justify-center font-bold text-lg">
+                {displayName.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold text-base text-base-content">{displayName}</h3>
+          <p className="text-xs text-success flex items-center gap-1">
+            <span className="size-2 rounded-full bg-success inline-block" />
+            Online
+          </p>
+        </div>
+      </div>
+
+      {/* RIGHT: Video Call Button */}
+      <CallButton handleVideoCall={handleVideoCall} />
+    </div>
+  );
+};
+
 const ChatPage = () => {
   const { id: targetUserId } = useParams();
+  const navigate = useNavigate();
 
   const [chatClient, setChatClient] = useState(null);
   const [channel, setChannel] = useState(null);
@@ -54,12 +93,7 @@ const ChatPage = () => {
           tokenData.token
         );
 
-        //
         const channelId = [authUser._id, targetUserId].sort().join("-");
-
-        // you and me
-        // if i start the chat => channelId: [myId, yourId]
-        // if you start the chat => channelId: [yourId, myId]  => [myId,yourId]
 
         const currChannel = client.channel("messaging", channelId, {
           members: [authUser._id, targetUserId],
@@ -88,7 +122,8 @@ const ChatPage = () => {
         text: `I've started a video call. Join me here: ${callUrl}`,
       });
 
-      toast.success("Video call link sent successfully!");
+      toast.success("Video call link sent! Redirecting to call room...");
+      navigate(`/call/${channel.id}`);
     }
   };
 
@@ -98,10 +133,9 @@ const ChatPage = () => {
     <div className="h-[93vh]">
       <Chat client={chatClient}>
         <Channel channel={channel}>
-          <div className="w-full relative">
-            <CallButton handleVideoCall={handleVideoCall} />
+          <div className="w-full h-full relative">
             <Window>
-              <ChannelHeader />
+              <ChatHeader channel={channel} authUser={authUser} handleVideoCall={handleVideoCall} />
               <MessageList />
               <MessageComposer />
             </Window>
