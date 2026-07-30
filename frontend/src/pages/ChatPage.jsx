@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
@@ -8,7 +8,7 @@ import {
   Channel,
   ChannelHeader,
   Chat,
-  MessageInput,
+  MessageComposer,
   MessageList,
   Thread,
   Window,
@@ -102,7 +102,7 @@ const ChatPage = () => {
             <Window>
               <ChannelHeader />
               <MessageList />
-              <MessageInput focus />
+              <MessageComposer />
             </Window>
           </div>
           <Thread />
