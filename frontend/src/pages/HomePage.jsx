@@ -6,14 +6,13 @@ import {
   getUserFriends,
   sendFriendRequest,
 } from "../lib/api";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
-import toast from "react-hot-toast";
 
 import { capitialize } from "../lib/utils";
 
-import FriendCard, { getLanguageFlag } from "../components/FriendCard.jsx";
-import NoFriendsFound from "../components/NoFriendsFound.jsx";
+import FriendCard, { getLanguageFlag } from "../components/FriendCard";
+import NoFriendsFound from "../components/NoFriendsFound";
 
 const HomePage = () => {
   const queryClient = useQueryClient();
@@ -34,27 +33,19 @@ const HomePage = () => {
     queryFn: getOutgoingFriendReqs,
   });
 
-  const { mutate: sendRequestMutation, isPending, variables: pendingUserId } = useMutation({
+  const { mutate: sendRequestMutation, isPending } = useMutation({
     mutationFn: sendFriendRequest,
-    onSuccess: () => {
-      toast.success("Friend request sent!");
-      queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] });
-    },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || "Failed to send friend request");
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
   });
 
   useEffect(() => {
     const outgoingIds = new Set();
-    const requests = outgoingFriendReqs?.outgoingRequests || (Array.isArray(outgoingFriendReqs) ? outgoingFriendReqs : []);
-    if (Array.isArray(requests) && requests.length > 0) {
-      requests.forEach((req) => {
-        const recipientId = req.recipient?._id || req.recipient;
-        if (recipientId) outgoingIds.add(recipientId.toString());
+    if (outgoingFriendReqs && outgoingFriendReqs.length > 0) {
+      outgoingFriendReqs.forEach((req) => {
+        outgoingIds.add(req.recipient._id);
       });
+      setOutgoingRequestsIds(outgoingIds);
     }
-    setOutgoingRequestsIds(outgoingIds);
   }, [outgoingFriendReqs]);
 
   return (
@@ -108,8 +99,7 @@ const HomePage = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedUsers.map((user) => {
-                const hasRequestBeenSent = outgoingRequestsIds.has(user._id?.toString() || user._id);
-                const isThisUserPending = isPending && pendingUserId === user._id;
+                const hasRequestBeenSent = outgoingRequestsIds.has(user._id);
 
                 return (
                   <div
@@ -119,11 +109,11 @@ const HomePage = () => {
                     <div className="card-body p-5 space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="avatar size-16 rounded-full">
-                          <img src={user.profilePic} alt={user.FullName || user.fullName} />
+                          <img src={user.profilePic} alt={user.fullName} />
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-lg">{user.FullName || user.fullName}</h3>
+                          <h3 className="font-semibold text-lg">{user.fullName}</h3>
                           {user.location && (
                             <div className="flex items-center text-xs opacity-70 mt-1">
                               <MapPinIcon className="size-3 mr-1" />
@@ -153,17 +143,12 @@ const HomePage = () => {
                           hasRequestBeenSent ? "btn-disabled" : "btn-primary"
                         } `}
                         onClick={() => sendRequestMutation(user._id)}
-                        disabled={hasRequestBeenSent || isThisUserPending}
+                        disabled={hasRequestBeenSent || isPending}
                       >
                         {hasRequestBeenSent ? (
                           <>
                             <CheckCircleIcon className="size-4 mr-2" />
                             Request Sent
-                          </>
-                        ) : isThisUserPending ? (
-                          <>
-                            <span className="loading loading-spinner loading-xs mr-2" />
-                            Sending...
                           </>
                         ) : (
                           <>

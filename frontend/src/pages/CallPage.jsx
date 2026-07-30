@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
@@ -17,8 +17,7 @@ import {
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import toast from "react-hot-toast";
-
-import ChatLoader from "../components/ChatLoader.jsx";
+import PageLoader from "../components/PageLoader";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
@@ -37,28 +36,25 @@ const CallPage = () => {
   });
 
   useEffect(() => {
-    let videoClient;
-    let callInstance;
-
     const initCall = async () => {
-      if (!tokenData?.token || !authUser || !callId) return;
+      if (!tokenData.token || !authUser || !callId) return;
 
       try {
         console.log("Initializing Stream video client...");
 
         const user = {
-          id: authUser._id || authUser.id,
-          name: authUser.fullName || authUser.FullName,
-          image: authUser.profilePic || "",
+          id: authUser._id,
+          name: authUser.fullName,
+          image: authUser.profilePic,
         };
 
-        videoClient = new StreamVideoClient({
+        const videoClient = new StreamVideoClient({
           apiKey: STREAM_API_KEY,
           user,
           token: tokenData.token,
         });
 
-        callInstance = videoClient.call("default", callId);
+        const callInstance = videoClient.call("default", callId);
 
         await callInstance.join({ create: true });
 
@@ -75,22 +71,13 @@ const CallPage = () => {
     };
 
     initCall();
-
-    return () => {
-      if (callInstance) {
-        callInstance.leave().catch((err) => console.error("Error leaving call:", err));
-      }
-      if (videoClient) {
-        videoClient.disconnectUser().catch((err) => console.error("Error disconnecting video client:", err));
-      }
-    };
   }, [tokenData, authUser, callId]);
 
-  if (isLoading || isConnecting) return <ChatLoader />;
+  if (isLoading || isConnecting) return <PageLoader />;
 
   return (
     <div className="h-screen flex flex-col items-center justify-center">
-      <div className="relative w-full h-full">
+      <div className="relative">
         {client && call ? (
           <StreamVideo client={client}>
             <StreamCall call={call}>
@@ -110,13 +97,10 @@ const CallPage = () => {
 const CallContent = () => {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (callingState === CallingState.LEFT) {
-      navigate("/");
-    }
-  }, [callingState, navigate]);
+  if (callingState === CallingState.LEFT) return navigate("/");
 
   return (
     <StreamTheme>

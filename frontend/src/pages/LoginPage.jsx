@@ -1,35 +1,33 @@
-import React from 'react'
-import { useState } from 'react'
-import { useQueryClient, useMutation } from '@tanstack/react-query'
-import { ShipWheel as ShipWheelIcon } from 'lucide-react'
-import { login } from '../lib/api.js'
-import { toast } from 'react-hot-toast'
-import { Link } from 'react-router-dom'
+import { useState } from "react";
+import { ShipWheelIcon } from "lucide-react";
+import { Link } from "react-router";
+import useLogin from "../hooks/useLogin";
 
-function LoginPage() {
-
+const LoginPage = () => {
   const [loginData, setLoginData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
-  const queryClient = useQueryClient();
+  // This is how we did it at first, without using our custom hook
+  // const queryClient = useQueryClient();
+  // const {
+  //   mutate: loginMutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: login,
+  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
 
-  const { mutate, isPending, error } = useMutation({
-      mutationFn: login,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["authUser"] });
-        toast.success("Login successful");
-      },
-      onError: (error) => {
-        toast.error(error.response?.data?.message || "Login failed");
-      }
-  });
+  // This is how we did it using our custom hook - optimized version
+  const { isPending, error, loginMutation } = useLogin();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    mutate(loginData);
-  }
+    loginMutation(loginData);
+  };
+
   return (
     <div
       className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
@@ -42,10 +40,16 @@ function LoginPage() {
           <div className="mb-4 flex items-center justify-start gap-2">
             <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
-              StreamLearn
+              Streamify
             </span>
           </div>
 
+          {/* ERROR MESSAGE DISPLAY */}
+          {error && (
+            <div className="alert alert-error mb-4">
+              <span>{error.response.data.message}</span>
+            </div>
+          )}
 
           <div className="w-full">
             <form onSubmit={handleLogin}>
@@ -116,7 +120,7 @@ function LoginPage() {
           <div className="max-w-md p-8">
             {/* Illustration */}
             <div className="relative aspect-square max-w-sm mx-auto">
-              <img src="/Video-call-bro.png" alt="Language connection illustration" className="w-full h-full" />
+              <img src="/i.png" alt="Language connection illustration" className="w-full h-full" />
             </div>
 
             <div className="text-center space-y-3 mt-6">
@@ -129,7 +133,6 @@ function LoginPage() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default LoginPage
+  );
+};
+export default LoginPage;

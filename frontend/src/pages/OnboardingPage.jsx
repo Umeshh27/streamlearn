@@ -1,49 +1,45 @@
-import React, { useState } from 'react'
-import { useAuthUser } from '../hooks/useAuthUser.js'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import { completeOnboarding } from '../lib/api.js'
-import {
-  Camera as CameraIcon,
-  Shuffle as ShuffleIcon,
-  MapPin as MapPinIcon,
-  ShipWheel as ShipWheelIcon,
-  Loader as LoaderIcon,
-} from 'lucide-react'
-import { LANGUAGES } from '../constants/index.js'
+import { useState } from "react";
+import useAuthUser from "../hooks/useAuthUser";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { completeOnboarding } from "../lib/api";
+import { LoaderIcon, MapPinIcon, ShipWheelIcon, ShuffleIcon } from "lucide-react";
+import { LANGUAGES } from "../constants";
 
-function OnboardingPage() {
+const OnboardingPage = () => {
   const { authUser } = useAuthUser();
   const queryClient = useQueryClient();
 
   const [formState, setFormState] = useState({
-    fullName: authUser?.FullName || authUser?.fullName || '',
-    bio: authUser?.bio || '',
-    nativeLanguage: authUser?.nativeLanguage || '',
-    learningLanguage: authUser?.learningLanguage || '',
-    location: authUser?.location || '',
-    profilePic: authUser?.profilePic || '',
+    fullName: authUser?.fullName || "",
+    bio: authUser?.bio || "",
+    nativeLanguage: authUser?.nativeLanguage || "",
+    learningLanguage: authUser?.learningLanguage || "",
+    location: authUser?.location || "",
+    profilePic: authUser?.profilePic || "",
   });
 
   const { mutate: onboardingMutation, isPending } = useMutation({
     mutationFn: completeOnboarding,
     onSuccess: () => {
-      toast.success("Onboarding completed successfully!");
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
+      toast.success("Profile onboarded successfully");
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
+
     onError: (error) => {
-      toast.error(error.response?.data?.message || "An error occurred during onboarding.");
+      toast.error(error.response.data.message);
     },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     onboardingMutation(formState);
   };
 
   const handleRandomAvatar = () => {
     const idx = Math.floor(Math.random() * 100) + 1; // 1-100 included
-    const randomAvatar = `https://avatars.rentcircle.ph/public/${idx}.png`;
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
 
     setFormState({ ...formState, profilePic: randomAvatar });
     toast.success("Random profile picture generated!");
@@ -191,7 +187,6 @@ function OnboardingPage() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default OnboardingPage
+  );
+};
+export default OnboardingPage;

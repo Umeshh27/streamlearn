@@ -1,6 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
-import { ShipWheel as ShipWheelIcon, Home as HomeIcon, Users as UsersIcon, Bell as BellIcon } from "lucide-react";
+import { BellIcon, HomeIcon, ShipWheelIcon, UsersIcon } from "lucide-react";
 
 const Sidebar = () => {
   const { authUser } = useAuthUser();
@@ -8,12 +8,12 @@ const Sidebar = () => {
   const currentPath = location.pathname;
 
   return (
-    <aside className="w-64 bg-base-200 border-r border-base-300 flex flex-col h-screen sticky top-0">
+    <aside className="w-64 bg-base-200 border-r border-base-300 hidden lg:flex flex-col h-screen sticky top-0">
       <div className="p-5 border-b border-base-300">
         <Link to="/" className="flex items-center gap-2.5">
-          <ShipWheelIcon className="size-7 text-primary" />
-          <span className="text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
-            StreamLearn
+          <ShipWheelIcon className="size-9 text-primary" />
+          <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
+            Streamify
           </span>
         </Link>
       </div>
@@ -59,7 +59,7 @@ const Sidebar = () => {
             </div>
           </div>
           <div className="flex-1">
-            <p className="font-semibold text-sm">{authUser?.fullName || authUser?.FullName}</p>
+            <p className="font-semibold text-sm">{authUser?.fullName}</p>
             <p className="text-xs text-success flex items-center gap-1">
               <span className="size-2 rounded-full bg-success inline-block" />
               Online
