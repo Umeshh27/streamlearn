@@ -18,6 +18,8 @@
     "react-hot-toast": "^2.6.0",
     "react-router": "^8.2.0",
     "react-router-dom": "^7.18.1",
+    "stream-chat": "^9.50.2",
+    "stream-chat-react": "^14.10.0",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
