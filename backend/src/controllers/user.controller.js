@@ -8,8 +8,8 @@ export async function getRecommendedUsers(req, res) {
     const recommendedUsers = await User.find({
       $and: [
         { _id: { $ne: currentUserId } }, // Exclude the current user
-        { _id: { $nin: currentUser.friends } }, // Exclude users who are already friends
-        { isOnBoarded: true }, // Only include users who are onboarded
+        { _id: { $nin: currentUser.friends || [] } }, // Exclude users who are already friends
+        { $or: [{ isOnBoarded: true }, { isOnboarded: true }] }, // Only include users who are onboarded
       ],
     });
     res.status(200).json(recommendedUsers);
@@ -25,7 +25,7 @@ export async function getMyFriends(req, res) {
       .select("friends")
       .populate(
         "friends",
-        "FullName profilePic nativeLanguage learningLanguage location",
+        "FullName fullName profilePic nativeLanguage learningLanguage location",
       );
     res.status(200).json(user.friends);
   } catch (error) {
@@ -138,7 +138,12 @@ export async function getFriendRequests(req, res) {
     status: "accepted"
   }).populate("recipient","FullName profilePic");
 
-  res.status(200).json({ incomingRequests, acceptedRequests });
+  res.status(200).json({
+    incomingRequests,
+    acceptedRequests,
+    incomingReqs: incomingRequests,
+    acceptedReqs: acceptedRequests,
+  });
 }
   catch (error) {
     console.error("Error fetching friend requests:", error);
@@ -152,7 +157,7 @@ export async function getOutgoingFriendRequests(req, res) {
       sender: req.user._id,
       status: "pending"
     }).populate("recipient", "FullName profilePic nativeLanguage learningLanguage location");
-    res.status(200).json({ outgoingRequests });
+    res.status(200).json(outgoingRequests);
   }
   catch (error) {
     console.error("Error fetching outgoing friend requests:", error);
