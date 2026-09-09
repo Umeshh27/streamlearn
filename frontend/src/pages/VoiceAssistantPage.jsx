@@ -1100,10 +1100,10 @@ export default function VoiceAssistantPage() {
 
                 {/* Audio Controls */}
                 <div className="flex items-center justify-center gap-2 pt-1 flex-wrap">
-                  <button className="btn btn-xs btn-outline btn-primary gap-1 font-semibold" onClick={() => playNeuralAudio(practiceSentence.sentence, learningLanguage, false, "practice-normal")}>
+                  <button className="btn btn-xs btn-primary text-primary-content gap-1.5 font-bold shadow-xs hover:brightness-110 active:scale-95 transition-all" onClick={() => playNeuralAudio(practiceSentence.sentence, learningLanguage, false, "practice-normal")}>
                     <Volume2 className="size-3.5" /> Hear Normal
                   </button>
-                  <button className="btn btn-xs btn-ghost border border-base-300 gap-1 font-semibold text-base-content hover:text-base-content hover:bg-base-200" onClick={() => playNeuralAudio(practiceSentence.sentence, learningLanguage, true, "practice-slow")}>
+                  <button className="btn btn-xs bg-base-100 hover:bg-base-200 border border-base-300 gap-1.5 font-bold text-base-content shadow-2xs active:scale-95 transition-all" onClick={() => playNeuralAudio(practiceSentence.sentence, learningLanguage, true, "practice-slow")}>
                     <Volume1 className="size-3.5" /> Hear Slow 🐢
                   </button>
                 </div>
@@ -1208,7 +1208,7 @@ export default function VoiceAssistantPage() {
 
               {/* Next Sentence / Try Again */}
               <div className="flex items-center justify-center gap-3">
-                <button className="btn btn-sm btn-ghost border border-base-300 gap-1.5 font-semibold text-base-content hover:text-base-content hover:bg-base-200" onClick={() => { setPracticeResult(null); }}>
+                <button className="btn btn-sm bg-base-100 hover:bg-base-200 border border-base-300 gap-1.5 font-bold text-base-content shadow-2xs active:scale-95 transition-all" onClick={() => { setPracticeResult(null); }}>
                   <RefreshCw className="size-3.5" /> Try Again
                 </button>
                 <button className="btn btn-sm btn-primary text-primary-content gap-1.5 font-bold shadow-xs hover:scale-105" onClick={() => { setPracticeResult(null); fetchPracticeSentence(); }}>
