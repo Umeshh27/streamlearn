@@ -24,7 +24,7 @@ const Sidebar = ({ onNavigateMobile }) => {
         <Link to="/" onClick={handleLinkClick} className="flex items-center gap-2.5 min-w-0">
           <ShipWheelIcon className="size-8 sm:size-9 text-primary shrink-0" />
           <span className="text-2xl sm:text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider truncate">
-            Streamify
+            LangBridge
           </span>
         </Link>
         {/* Close Button on Mobile */}
