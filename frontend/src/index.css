@@ -2,33 +2,557 @@
 @tailwind components;
 @tailwind utilities;
 
-.str-chat__channel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, #c9e8c9, #b7e7bb);
+/* Viewport and root base styles for cross-browser mobile viewport height (dvh) support */
+html,
+body,
+#root {
   height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@supports (height: 100dvh) {
+  html,
+  body,
+  #root {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+.app-root-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-viewport-container {
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  width: 100%;
+}
+
+/* Ensure Chat page main container never scrolls the outer page */
+main:has(.str-chat) {
+  overflow: hidden !important;
+}
+
+/* Responsive Stream Chat & Video Controls for Mobile & Tablets */
+.str-chat,
+.str-chat__channel {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  background-color: transparent !important;
+  color: hsl(var(--bc));
 }
 
 .str-chat__container {
   max-width: 1200px;
   width: 100%;
-  height: 80% !important;
+  height: 100% !important;
   margin: 0 auto !important;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  border-radius: 16px;
+  background-color: hsl(var(--b1));
+  color: hsl(var(--bc));
+  border: 1px solid hsl(var(--b3));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
 }
 
-.str-chat__list {
-  background-color: #ffffff;
+.str-chat__main-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  background-color: hsl(var(--b1));
+  color: hsl(var(--bc));
+  position: relative !important;
+}
+
+/* Stream Chat v14 MessageList Inner & Main Panel - MUST flex instead of height: 100% */
+.str-chat__main-panel-inner,
+.str-chat__message-list-main-panel {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.str-chat__message-list,
+.str-chat__list,
+.str-chat__virtual-list {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-y: contain !important;
+  background-color: hsl(var(--b1)) !important;
+  color: hsl(var(--bc)) !important;
   padding: 12px;
+  width: 100% !important;
+}
+
+.str-chat__empty-channel {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  background-color: transparent !important;
+  color: hsl(var(--bc)) !important;
+}
+
+.str-chat__empty-channel svg {
+  color: hsl(var(--bc) / 0.5) !important;
+}
+
+.str-chat__empty-channel .str-chat__empty-channel-text {
+  color: hsl(var(--bc) / 0.7) !important;
+}
+
+.str-chat__message-list-scroll {
+  width: 100% !important;
+  max-width: 100% !important;
+  overscroll-behavior-y: contain !important;
 }
 
 .str-chat__list-notifications {
-  display: none;
+  display: none !important;
 }
 
-.str-chat__message-input {
-  border-top: 1px solid #ddd;
+.str-chat__main-panel .str-chat__ul .str-chat__li:first-of-type {
+  padding-top: 0.5rem !important;
 }
+
+/* Stream Chat v14 MessageComposer & Input Controls */
+.str-chat__message-composer-container,
+.str-chat .str-chat__message-composer-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  position: relative !important;
+  bottom: 0 !important;
+  z-index: 20 !important;
+  margin-top: auto !important;
+  background-color: hsl(var(--b2)) !important;
+  border-top: 1px solid hsl(var(--b3)) !important;
+  padding: 8px 12px calc(max(10px, env(safe-area-inset-bottom, 10px))) 12px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.str-chat__message-composer,
+.str-chat .str-chat__message-composer {
+  background-color: hsl(var(--b1)) !important;
+  border: 1px solid hsl(var(--b3)) !important;
+  border-radius: 14px !important;
+  color: hsl(var(--bc)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 42px !important;
+}
+
+.str-chat__message-composer-compose-area {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  color: hsl(var(--bc)) !important;
+}
+
+.str-chat__message-composer-controls {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 4px 6px !important;
+  gap: 6px !important;
+}
+
+.str-chat__message-composer-controls__text-composition-controls {
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.str-chat__message-composer-controls__text-composition-controls__text {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.str-chat__textarea {
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.str-chat__textarea textarea,
+.str-chat .str-chat__textarea textarea {
+  background-color: transparent !important;
+  color: hsl(var(--bc)) !important;
+  border: none !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  padding: 6px 8px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  width: 100% !important;
+  min-height: 28px !important;
+  resize: none !important;
+}
+
+.str-chat__textarea textarea::placeholder,
+.str-chat .str-chat__textarea textarea::placeholder {
+  color: hsl(var(--bc) / 0.5) !important;
+  opacity: 1 !important;
+}
+
+.str-chat__message-composer__actions {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.str-chat__send-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  cursor: pointer !important;
+}
+
+.str-chat__send-button:not(:disabled):not([disabled]) {
+  color: hsl(var(--p)) !important;
+  padding: 4px !important;
+}
+
+.str-chat__send-button:disabled,
+.str-chat__send-button[disabled] {
+  color: hsl(var(--bc) / 0.35) !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  padding: 4px !important;
+}
+
+.str-chat__attachment-selector,
+.str-chat__attachment-selector button,
+.str-chat__emoji-picker-button {
+  color: hsl(var(--bc) / 0.7) !important;
+}
+
+.str-chat__message-simple-text-inner {
+  color: inherit;
+}
+
+.str-chat__message--regular .str-chat__message-text-inner {
+  background-color: hsl(var(--b2)) !important;
+  color: hsl(var(--bc)) !important;
+  border: 1px solid hsl(var(--b3)) !important;
+}
+
+.str-chat__message--me .str-chat__message-text-inner {
+  background-color: hsl(var(--p)) !important;
+  color: hsl(var(--pc)) !important;
+  border: none !important;
+}
+
+/* Mobile Overrides placed AFTER base definitions to guarantee precedence */
+@media (max-width: 640px) {
+  .str-chat,
+  .str-chat__channel,
+  .str-chat__main-panel,
+  .str-chat__container {
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .str-chat__main-panel-inner,
+  .str-chat__message-list-main-panel {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .str-chat__message-list,
+  .str-chat__list,
+  .str-chat__virtual-list {
+    padding: 6px 8px !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    width: 100% !important;
+  }
+
+  .str-chat__message-composer-container,
+  .str-chat .str-chat__message-composer-container {
+    padding: 8px 10px calc(max(12px, env(safe-area-inset-bottom, 12px))) 10px !important;
+    background-color: hsl(var(--b1)) !important;
+    border-top: 1px solid hsl(var(--b3)) !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    position: relative !important;
+    margin-top: auto !important;
+    z-index: 20 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .str-chat__message-composer,
+  .str-chat .str-chat__message-composer {
+    border-radius: 22px !important;
+    border: 1px solid hsl(var(--b3)) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    min-height: 40px !important;
+    padding-inline: 4px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 16px font-size prevents iOS Safari from automatically zooming into the input */
+  .str-chat__textarea textarea,
+  .str-chat .str-chat__textarea textarea {
+    font-size: 16px !important;
+    padding: 6px 8px !important;
+  }
+
+  .str-video__call-controls {
+    gap: 6px !important;
+    padding: 4px 8px !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+  }
+
+  .str-video__composite-button__button,
+  .str-video__call-controls__button {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+}
+
+/* ==========================================================================
+   DAISYUI MULTI-THEME CONTRAST & HOVER ACCESSIBILITY GUARANTEES
+   ========================================================================== */
+
+
+/* 1. Ensure outline button hover states ALWAYS use their theme-defined legible content colors */
+.btn-outline.btn-primary:hover {
+  color: oklch(var(--pc) / 1) !important;
+}
+.btn-outline.btn-secondary:hover {
+  color: oklch(var(--sc) / 1) !important;
+}
+.btn-outline.btn-accent:hover {
+  color: oklch(var(--ac) / 1) !important;
+}
+.btn-outline.btn-success:hover {
+  color: oklch(var(--suc) / 1) !important;
+}
+.btn-outline.btn-warning:hover {
+  color: oklch(var(--wac) / 1) !important;
+}
+.btn-outline.btn-error:hover {
+  color: oklch(var(--erc) / 1) !important;
+}
+.btn-outline.btn-info:hover {
+  color: oklch(var(--inc) / 1) !important;
+}
+
+/* 2. Prevent neutral outline buttons from becoming invisible when hovered with base backgrounds */
+.btn-outline:not(.btn-primary):not(.btn-secondary):not(.btn-accent):not(.btn-success):not(.btn-warning):not(.btn-error):not(.btn-info)[class*="hover:bg-base-"]:hover,
+.btn-outline:not(.btn-primary):not(.btn-secondary):not(.btn-accent):not(.btn-success):not(.btn-warning):not(.btn-error):not(.btn-info)[class*="hover:text-base-content"]:hover {
+  color: oklch(var(--bc) / 1) !important;
+}
+
+/* 3. Ensure primary, secondary, accent, error, warning, success buttons ALWAYS guarantee readable text color across all themes and active states */
+.btn-primary:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-primary:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-primary:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-primary:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--pc) / 1) !important;
+}
+.btn-secondary:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-secondary:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-secondary:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-secondary:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--sc) / 1) !important;
+}
+.btn-accent:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-accent:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-accent:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-accent:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--ac) / 1) !important;
+}
+.btn-neutral:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-neutral:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-neutral:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-neutral:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--nc) / 1) !important;
+}
+.btn-warning:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-warning:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-warning:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-warning:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--wac) / 1) !important;
+}
+.btn-error:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-error:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-error:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-error:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--erc) / 1) !important;
+}
+.btn-success:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-success:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-success:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-success:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--suc) / 1) !important;
+}
+.btn-info:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-info:hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-info:focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-info:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--inc) / 1) !important;
+}
+.btn-ghost:not([class*="hover:text-"]):not(:disabled):not([disabled]):not(.btn-disabled):hover {
+  color: oklch(var(--bc) / 1) !important;
+}
+.btn-ghost[class*="hover:text-error"]:not(:disabled):not([disabled]):not(.btn-disabled):hover {
+  color: oklch(var(--erc) / 1) !important;
+}
+.btn-ghost[class*="hover:text-primary"]:not(:disabled):not([disabled]):not(.btn-disabled):hover {
+  color: oklch(var(--pc) / 1) !important;
+}
+
+/* 4. Universal Disabled Button & Form Element Contrast Guarantee Across All DaisyUI Themes */
+.btn:disabled,
+.btn[disabled],
+.btn-disabled,
+.btn:disabled:hover,
+.btn[disabled]:hover,
+.btn-disabled:hover {
+  background-color: oklch(var(--b3) / 0.75) !important;
+  border-color: oklch(var(--b3) / 0.9) !important;
+  color: oklch(var(--bc) / 0.45) !important;
+  opacity: 0.85 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.btn:disabled *,
+.btn[disabled] *,
+.btn-disabled * {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 5. Ensure badge text colors match their contrasting theme content colors */
+.badge-primary {
+  background-color: oklch(var(--p) / 1) !important;
+  color: oklch(var(--pc) / 1) !important;
+}
+.badge-secondary {
+  background-color: oklch(var(--s) / 1) !important;
+  color: oklch(var(--sc) / 1) !important;
+}
+.badge-accent {
+  background-color: oklch(var(--a) / 1) !important;
+  color: oklch(var(--ac) / 1) !important;
+}
+.badge-warning {
+  background-color: oklch(var(--wa) / 1) !important;
+  color: oklch(var(--wac) / 1) !important;
+}
+.badge-error {
+  background-color: oklch(var(--er) / 1) !important;
+  color: oklch(var(--erc) / 1) !important;
+}
+.badge-success {
+  background-color: oklch(var(--su) / 1) !important;
+  color: oklch(var(--suc) / 1) !important;
+}
+.badge-info {
+  background-color: oklch(var(--in) / 1) !important;
+  color: oklch(var(--inc) / 1) !important;
+}
+.badge-neutral {
+  background-color: oklch(var(--n) / 1) !important;
+  color: oklch(var(--nc) / 1) !important;
+}
+
+/* 6. Dropdown item active/hover text contrast */
+.dropdown-content button:hover,
+.dropdown-content a:hover {
+  background-color: oklch(var(--b3) / 0.7) !important;
+  color: oklch(var(--bc) / 1) !important;
+}
+
+/* ==========================================================================
+   7. MOBILE & TOAST RESPONSIVENESS ENHANCEMENTS
+   ========================================================================== */
+html, body {
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: auto;
+}
+
+@media (max-width: 640px) {
+  /* Prevent accidental horizontal overflow on narrow devices */
+  body {
+    overflow-x: hidden;
+  }
+}
+
+
