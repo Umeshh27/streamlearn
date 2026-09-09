@@ -1,10 +1,11 @@
-# 🌐 StreamLearn — Real-Time Language Exchange & AI Pronunciation Platform
+# 🌐 Streamify — Real-Time Language Exchange & AI Pronunciation Platform
 
-> **StreamLearn** (also known as **Streamify**) is an enterprise-grade, full-stack language learning and cultural exchange platform. It combines peer-to-peer social networking, real-time multilingual community lounges, WebRTC 1-on-1 HD video calling with tab audio screen sharing, and an AI-powered Voice Tutor and Pronunciation Lab with sub-second neural speech synthesis.
+> **Streamify** - is an enterprise-grade, full-stack language learning and cultural exchange platform. It combines peer-to-peer social networking, real-time multilingual community lounges, WebRTC 1-on-1 HD video calling with tab audio screen sharing, and an AI-powered Voice Tutor and Pronunciation Lab with sub-second neural speech synthesis.
 
 ---
 
 ## 📑 Table of Contents
+
 1. [Platform Overview & Philosophy](#-platform-overview--philosophy)
 2. [Key Features & User Journey](#-key-features--user-journey)
 3. [Technology Stack & Architectural Rationale](#-technology-stack--architectural-rationale)
@@ -30,11 +31,13 @@
 
 Learning a foreign language in isolation often leads to grammar knowledge without conversational fluency. Traditional apps rely heavily on text-based flashcards and multiple-choice drills, leaving learners unprepared for spontaneous spoken interaction.
 
-**StreamLearn** bridges this gap through two foundational pillars:
+**Streamify** bridges this gap through two foundational pillars:
+
 1. **Authentic Human Immersion**: Connects learners with native speakers and language partners across the globe via live language lounges, text chat, and synchronized HD video calling.
 2. **AI-Assisted Self-Paced Practice**: Provides a 24/7 private environment where learners can practice speaking, receive instant word-by-word pronunciation scoring, and obtain tongue and mouth placement feedback in their native tongue before speaking with human partners.
 
 ### Core Tenets:
+
 - **100% Free & Accessible**: No subscriptions or paywalled tiers. All features (video calls, rooms, AI tutoring) are completely free.
 - **Strictly Educational**: Zero tolerance for unsolicited dating, romance queries, harassment, or vulgar language. Built-in instant regex guards and prompt-level filters refuse non-educational queries on the spot.
 - **Progressive Discipline**: Automated 3-Strike policy (5-min timeout → 10-min timeout → permanent ban) with staff monitoring and full-screen lockout overlays.
@@ -60,10 +63,12 @@ graph TD
 ```
 
 ### 1. Two-Factor Email Verification & Safe Onboarding
+
 - **6-Digit OTP Verification**: Registration triggers a branded HTML email with a 15-minute expiring numeric code using Nodemailer. Unverified accounts cannot log in or interact.
 - **Comprehensive Profile Setup**: Users must supply their native language, target learning language, geographical location, age (enforced 14+), profile avatar, and a meaningful bio (minimum 20 words) to ensure high-quality community interactions.
 
 ### 2. Multi-Room Community Lounges (Global Chat)
+
 - **Permanent Global Lounge**: The central hub (`global-community`) where all international members gather.
 - **Dynamic Language Lounges**: Dedicated rooms for 21+ languages (Spanish, Hindi, Telugu, Tamil, French, German, Japanese, Korean, Arabic, etc.).
 - **Auto-Pruning Inactivity Engine**: User-created or empty language rooms that stay idle for over 30 minutes are automatically deleted from Stream Chat to prevent room clutter.
@@ -71,17 +76,20 @@ graph TD
 - **Character Guard**: Real-time client and server limits (300 characters per message) prevent chat flooding and spam.
 
 ### 3. Peer Discovery & Social Connection
+
 - **Smart Recommendations**: Recommends global learners based on complementary native and target language pairs.
 - **Friend Requests & Notifications**: Real-time incoming and outgoing request system with unread notification badges and instant toast updates.
 - **Direct Profiles**: In-depth modal showing language proficiencies, bio, account age, and friendship status.
 
 ### 4. 1-on-1 Messaging & Screen-Share Video Calls
+
 - **Synchronized Text Messaging**: Direct 1-on-1 messaging powered by GetStream Chat with typing indicators, reactions, threads, and chat history purging.
 - **Low-Latency HD Video Calling**: Powered by Stream Video WebRTC SFU architecture.
 - **Audio-Enabled Screen Sharing**: Uses `enableScreenShareAudio()` to stream both video and system/tab audio, allowing partners to share educational videos, podcasts, and presentations together.
 - **Full Call Controls**: Camera and microphone toggles, participant grid/speaker layouts, fullscreen mode, and connection health diagnostics.
 
 ### 5. AI Voice Assistant & Pronunciation Lab
+
 - **Communication Coach (Voice & Text)**:
   - Real-time conversational AI powered by Groq's high-throughput Llama 3.3 70B Versatile and fast compound models.
   - Multi-script speech synthesis using Microsoft Edge Neural TTS (e.g., `ShrutiNeural` for Telugu, `SwaraNeural` for Hindi, `JennyNeural` for English) with Google TTS fallback.
@@ -94,6 +102,7 @@ graph TD
   - Curated and AI-generated practice sentences across Beginner, Intermediate, and Advanced tiers.
 
 ### 6. Staff & Admin Command Center (`/admin`)
+
 - **Real-Time Analytics Dashboard**: Total users, verified users, active strikes, active suspensions, banned accounts, pending reports, and language distribution graphs.
 - **Service Health Monitoring**: Live status check for MongoDB, Redis connection, Stream API, and active Groq API key failover pool.
 - **User Directory & Moderation**: Search by name or email, filter by violations, issue 5-minute or 10-minute timeouts, clear strikes, force-verify accounts, clear inappropriate profiles, or delete users.
@@ -107,33 +116,33 @@ graph TD
 
 ### Frontend Architecture
 
-| Technology | Purpose in StreamLearn | Why This Tech Was Chosen |
-|---|---|---|
-| **React 19** | User interface & reactive component hierarchy | Latest concurrent rendering architecture, transitions, and component optimizations for real-time applications. |
-| **Vite** | Modern build tool & development server | Sub-millisecond Hot Module Replacement (HMR) and optimized Rollup production bundling, far faster than Webpack. |
-| **Tailwind CSS v3** | Atomic styling & design system | Zero-runtime CSS generation, consistent design tokens, effortless responsive classes, and small production bundles. |
-| **DaisyUI v4** | UI component primitives & themes | Accessible, styled semantic classes (`btn`, `modal`, `badge`, `card`) with native support for multi-theme switching (`data-theme`). |
-| **React Router v7 / v8** | Client-side routing & navigation | Declarative nested routing, protected route guards, redirects, and state preservation across transitions. |
-| **TanStack React Query v5** | Server-state management & caching | Automatic cache invalidation, deduplication of concurrent requests, background synchronization, and optimistic UI updates for friend requests and moderation actions. |
-| **Zustand** | Lightweight client-state management | Minimal boilerplate store for themes, sidebar toggle states, and global user profile modals without the overhead of Redux. |
-| **Stream Video React SDK** | WebRTC video & audio engine | Enterprise-grade SFU (Selective Forwarding Unit) architecture, automatic bandwidth adaptation, screen share audio, and cross-browser reliability. |
-| **Stream Chat React SDK** | Real-time chat UI & events | Battle-tested chat components with built-in typing indicators, optimistic message sending, unread badges, and reconnection handling. |
-| **Lucide React** | Scalable vector icons | Clean, modern, lightweight SVG icons with tree-shaking support. |
-| **React Hot Toast** | Floating notification alerts | Lightweight, non-blocking visual feedback for network events, errors, and approvals. |
+| Technology                  | Purpose in Streamify                          | Why This Tech Was Chosen                                                                                                                                              |
+| --------------------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **React 19**                | User interface & reactive component hierarchy | Latest concurrent rendering architecture, transitions, and component optimizations for real-time applications.                                                        |
+| **Vite**                    | Modern build tool & development server        | Sub-millisecond Hot Module Replacement (HMR) and optimized Rollup production bundling, far faster than Webpack.                                                       |
+| **Tailwind CSS v3**         | Atomic styling & design system                | Zero-runtime CSS generation, consistent design tokens, effortless responsive classes, and small production bundles.                                                   |
+| **DaisyUI v4**              | UI component primitives & themes              | Accessible, styled semantic classes (`btn`, `modal`, `badge`, `card`) with native support for multi-theme switching (`data-theme`).                                   |
+| **React Router v7 / v8**    | Client-side routing & navigation              | Declarative nested routing, protected route guards, redirects, and state preservation across transitions.                                                             |
+| **TanStack React Query v5** | Server-state management & caching             | Automatic cache invalidation, deduplication of concurrent requests, background synchronization, and optimistic UI updates for friend requests and moderation actions. |
+| **Zustand**                 | Lightweight client-state management           | Minimal boilerplate store for themes, sidebar toggle states, and global user profile modals without the overhead of Redux.                                            |
+| **Stream Video React SDK**  | WebRTC video & audio engine                   | Enterprise-grade SFU (Selective Forwarding Unit) architecture, automatic bandwidth adaptation, screen share audio, and cross-browser reliability.                     |
+| **Stream Chat React SDK**   | Real-time chat UI & events                    | Battle-tested chat components with built-in typing indicators, optimistic message sending, unread badges, and reconnection handling.                                  |
+| **Lucide React**            | Scalable vector icons                         | Clean, modern, lightweight SVG icons with tree-shaking support.                                                                                                       |
+| **React Hot Toast**         | Floating notification alerts                  | Lightweight, non-blocking visual feedback for network events, errors, and approvals.                                                                                  |
 
 ### Backend Architecture
 
-| Technology | Purpose in StreamLearn | Why This Tech Was Chosen |
-|---|---|---|
-| **Node.js (ES Modules)** | Asynchronous server runtime | High-throughput non-blocking I/O ideal for handling concurrent REST requests and WebSocket streams. Native ESM syntax (`import`/`export`). |
-| **Express 4.21** | RESTful HTTP API framework | Robust, unopinionated routing, middleware chaining, and battle-tested HTTP handling. |
-| **MongoDB & Mongoose 8** | Primary database & object modeling | Flexible schema design for user profiles, friendship arrays, reports queue, and sub-admin invitation states. Excellent aggregation pipeline for admin analytics. |
-| **Redis & `ioredis` 6** | High-performance cache & rate limiter | Sub-millisecond in-memory storage for AI responses, TTS audio binary caching, and sliding-window rate limiting. Implements graceful fallback if Redis is offline. |
-| **WebSockets (`ws` 8)** | Bidirectional streaming for AI voice | Low-latency full-duplex communication channel between browser and server for live voice turns. |
-| **Groq Cloud API (`openai` SDK)** | Ultra-fast LLM & Whisper inference | LPUs (Language Processing Units) deliver sub-second response times for Llama 3.3 70B and `whisper-large-v3-turbo` audio transcription, critical for conversational AI. |
-| **Microsoft Edge TTS (`msedge-tts`)** | Neural multilingual speech synthesis | Studio-quality human-like voices across 21+ languages (including regional Indian languages like Telugu, Hindi, Tamil, Kannada) with zero cost compared to commercial cloud TTS. |
-| **Nodemailer** | SMTP email transport | Automated delivery of responsive HTML two-factor verification emails via Gmail or custom SMTP hosts. |
-| **JWT & `bcryptjs`** | Authentication & password hashing | Industry-standard stateless authentication stored in secure HTTP-only cookies; salted bcrypt hashing (10 rounds) protects passwords against rainbow table attacks. |
+| Technology                            | Purpose in Streamify                  | Why This Tech Was Chosen                                                                                                                                                        |
+| ------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Node.js (ES Modules)**              | Asynchronous server runtime           | High-throughput non-blocking I/O ideal for handling concurrent REST requests and WebSocket streams. Native ESM syntax (`import`/`export`).                                      |
+| **Express 4.21**                      | RESTful HTTP API framework            | Robust, unopinionated routing, middleware chaining, and battle-tested HTTP handling.                                                                                            |
+| **MongoDB & Mongoose 8**              | Primary database & object modeling    | Flexible schema design for user profiles, friendship arrays, reports queue, and sub-admin invitation states. Excellent aggregation pipeline for admin analytics.                |
+| **Redis & `ioredis` 6**               | High-performance cache & rate limiter | Sub-millisecond in-memory storage for AI responses, TTS audio binary caching, and sliding-window rate limiting. Implements graceful fallback if Redis is offline.               |
+| **WebSockets (`ws` 8)**               | Bidirectional streaming for AI voice  | Low-latency full-duplex communication channel between browser and server for live voice turns.                                                                                  |
+| **Groq Cloud API (`openai` SDK)**     | Ultra-fast LLM & Whisper inference    | LPUs (Language Processing Units) deliver sub-second response times for Llama 3.3 70B and `whisper-large-v3-turbo` audio transcription, critical for conversational AI.          |
+| **Microsoft Edge TTS (`msedge-tts`)** | Neural multilingual speech synthesis  | Studio-quality human-like voices across 21+ languages (including regional Indian languages like Telugu, Hindi, Tamil, Kannada) with zero cost compared to commercial cloud TTS. |
+| **Nodemailer**                        | SMTP email transport                  | Automated delivery of responsive HTML two-factor verification emails via Gmail or custom SMTP hosts.                                                                            |
+| **JWT & `bcryptjs`**                  | Authentication & password hashing     | Industry-standard stateless authentication stored in secure HTTP-only cookies; salted bcrypt hashing (10 rounds) protects passwords against rainbow table attacks.              |
 
 ---
 
@@ -172,6 +181,7 @@ sequenceDiagram
 ```
 
 ### 2. Real-Time Global & Language Lounges
+
 - All connected clients join Stream Chat livestream channels (`livestream:global-community` or `livestream:lang-<name>`).
 - When a user selects a language from the lounge selector:
   1. Frontend creates or queries the channel with channel ID `lang-<normalized_language>`.
@@ -179,6 +189,7 @@ sequenceDiagram
   3. If no messages are posted in a custom lounge for **30 minutes**, the backend marks it as inactive and broadcasts a `room_removed` event via the main channel, causing all clients to refresh their room list cleanly.
 
 ### 3. WebRTC 1-on-1 Video Calling & Screen Sharing
+
 - When user A calls user B:
   1. Frontend navigates to `/call/:id` where `:id` is a deterministic channel identifier (e.g., `userA-userB` or a unique call room ID).
   2. Frontend queries `GET /api/chat/token` to acquire a cryptographically signed HMAC token from the backend using the Stream Secret Key.
@@ -229,12 +240,16 @@ sequenceDiagram
 ```
 
 #### Multi-Key Groq Failover Engine
+
 Located in `backend/src/services/groqService.js`:
+
 - Scans `process.env` dynamically for all keys containing `GROQ` (e.g. `GROQ_API_KEY_1`, `GROQ_API_KEY_2`, etc.).
 - Rotates keys round-robin. If one key encounters a rate limit (HTTP 429) or temporary network failure, it automatically shifts to the next available key without interrupting the user's conversation.
 
 #### Multi-Script Edge TTS Engine
+
 Located in `backend/src/controllers/ai.controller.js`:
+
 - Recognizes that language tutors often speak both the target foreign language and the user's native tongue in a single explanation.
 - Uses script detection regexes (`[\u0C00-\u0C7F]` for Telugu, `[\u0900-\u097F]` for Devanagari, `[\u3040-\u30FF]` for Japanese, etc.).
 - Segments the sentence into distinct phonetic chunks and synthesizes each chunk with its native neural voice before concatenating the audio buffers into a single MP3 stream.
@@ -269,7 +284,7 @@ graph LR
 ## 📁 Repository Directory Structure
 
 ```
-streamlearn/
+streamify/
 ├── package.json                   # Root monorepo build & orchestration script
 ├── backend/                       # Express, MongoDB, Redis & AI backend
 │   ├── .env                       # Backend environment configuration
@@ -369,72 +384,79 @@ streamlearn/
 ## 📡 Complete REST API & WebSocket Specification
 
 ### 1. Authentication Endpoints (`/api/auth`)
-| Method | Path | Auth Required | Description |
-|---|---|---|---|
-| `POST` | `/api/auth/signup` | No | Register new account. Generates and emails 6-digit OTP code. |
-| `POST` | `/api/auth/verify-email` | No | Verifies 6-digit OTP. Sets HTTP-only JWT cookie upon success. |
-| `POST` | `/api/auth/resend-code` | No | Re-generates and re-sends OTP code to the provided email. |
-| `POST` | `/api/auth/login` | No | Validates credentials, checks verification status, sets JWT cookie. |
-| `POST` | `/api/auth/logout` | Yes | Clears HTTP-only JWT cookie. |
-| `GET` | `/api/auth/me` | Yes | Returns current authenticated user record. |
-| `POST` | `/api/auth/onboard` | Yes | Completes initial user setup (requires age >= 14, bio >= 20 words). |
+
+| Method | Path                     | Auth Required | Description                                                         |
+| ------ | ------------------------ | ------------- | ------------------------------------------------------------------- |
+| `POST` | `/api/auth/signup`       | No            | Register new account. Generates and emails 6-digit OTP code.        |
+| `POST` | `/api/auth/verify-email` | No            | Verifies 6-digit OTP. Sets HTTP-only JWT cookie upon success.       |
+| `POST` | `/api/auth/resend-code`  | No            | Re-generates and re-sends OTP code to the provided email.           |
+| `POST` | `/api/auth/login`        | No            | Validates credentials, checks verification status, sets JWT cookie. |
+| `POST` | `/api/auth/logout`       | Yes           | Clears HTTP-only JWT cookie.                                        |
+| `GET`  | `/api/auth/me`           | Yes           | Returns current authenticated user record.                          |
+| `POST` | `/api/auth/onboard`      | Yes           | Completes initial user setup (requires age >= 14, bio >= 20 words). |
 
 ### 2. User & Social Endpoints (`/api/users`)
-| Method | Path | Auth Required | Description |
-|---|---|---|---|
-| `GET` | `/api/users/recommended` | Yes | Fetches recommended users based on language compatibility. |
-| `GET` | `/api/users/all` | Yes | Retrieves list of all onboarded global learners. |
-| `GET` | `/api/users/friends` | Yes | Returns the authenticated user's confirmed friends. |
-| `GET` | `/api/users/friend-requests` | Yes | Returns incoming pending requests and accepted notifications. |
-| `GET` | `/api/users/outgoing-requests` | Yes | Returns pending outgoing friend requests sent by the user. |
-| `POST` | `/api/users/friend-request/:id` | Yes | Sends a new friend request to target user. |
-| `PUT` | `/api/users/friend-request/:id/accept` | Yes | Accepts an incoming friend request. |
-| `PUT` | `/api/users/friend-request/:id/reject` | Yes | Declines and deletes an incoming friend request. |
-| `DELETE` | `/api/users/notification/:id` | Yes | Dismisses a specific notification item. |
-| `DELETE` | `/api/users/notifications/clear` | Yes | Clears all accepted notification entries. |
-| `DELETE` | `/api/users/unfriend/:id` | Yes | Removes friendship and deletes chat relations between two users. |
-| `GET` | `/api/users/profile/:id` | Yes | Retrieves detailed profile information for a given user. |
-| `PUT` | `/api/users/profile` | Yes | Updates profile fields (name, bio, languages, location, avatar). |
-| `POST` | `/api/users/staff-invitation/respond` | Yes | Accepts or declines a Sub-Admin nomination invitation. |
+
+| Method   | Path                                   | Auth Required | Description                                                      |
+| -------- | -------------------------------------- | ------------- | ---------------------------------------------------------------- |
+| `GET`    | `/api/users/recommended`               | Yes           | Fetches recommended users based on language compatibility.       |
+| `GET`    | `/api/users/all`                       | Yes           | Retrieves list of all onboarded global learners.                 |
+| `GET`    | `/api/users/friends`                   | Yes           | Returns the authenticated user's confirmed friends.              |
+| `GET`    | `/api/users/friend-requests`           | Yes           | Returns incoming pending requests and accepted notifications.    |
+| `GET`    | `/api/users/outgoing-requests`         | Yes           | Returns pending outgoing friend requests sent by the user.       |
+| `POST`   | `/api/users/friend-request/:id`        | Yes           | Sends a new friend request to target user.                       |
+| `PUT`    | `/api/users/friend-request/:id/accept` | Yes           | Accepts an incoming friend request.                              |
+| `PUT`    | `/api/users/friend-request/:id/reject` | Yes           | Declines and deletes an incoming friend request.                 |
+| `DELETE` | `/api/users/notification/:id`          | Yes           | Dismisses a specific notification item.                          |
+| `DELETE` | `/api/users/notifications/clear`       | Yes           | Clears all accepted notification entries.                        |
+| `DELETE` | `/api/users/unfriend/:id`              | Yes           | Removes friendship and deletes chat relations between two users. |
+| `GET`    | `/api/users/profile/:id`               | Yes           | Retrieves detailed profile information for a given user.         |
+| `PUT`    | `/api/users/profile`                   | Yes           | Updates profile fields (name, bio, languages, location, avatar). |
+| `POST`   | `/api/users/staff-invitation/respond`  | Yes           | Accepts or declines a Sub-Admin nomination invitation.           |
 
 ### 3. Real-Time Chat & Video Endpoints (`/api/chat`)
-| Method | Path | Auth Required | Description |
-|---|---|---|---|
-| `GET` | `/api/chat/token` | Yes | Generates a signed GetStream HMAC user token for chat and video. |
-| `POST` | `/api/chat/channel/:targetUserId` | Yes | Creates or retrieves a 1-on-1 direct messaging channel with target user. |
-| `DELETE` | `/api/chat/channel/:targetUserId/history` | Yes | Truncates and clears all message history in a 1-on-1 channel. |
+
+| Method   | Path                                      | Auth Required | Description                                                              |
+| -------- | ----------------------------------------- | ------------- | ------------------------------------------------------------------------ |
+| `GET`    | `/api/chat/token`                         | Yes           | Generates a signed GetStream HMAC user token for chat and video.         |
+| `POST`   | `/api/chat/channel/:targetUserId`         | Yes           | Creates or retrieves a 1-on-1 direct messaging channel with target user. |
+| `DELETE` | `/api/chat/channel/:targetUserId/history` | Yes           | Truncates and clears all message history in a 1-on-1 channel.            |
 
 ### 4. AI Voice Tutor & Pronunciation Endpoints (`/api/ai`)
-| Method | Path | Auth Required | Description |
-|---|---|---|---|
-| `POST` | `/api/ai/chat` | Yes | Sends message turn to Groq Llama 3.3. Returns structured target/native text. |
-| `POST` | `/api/ai/transcribe` | Yes | Transcribes base64 audio via Groq Whisper (`whisper-large-v3-turbo`). |
-| `POST` | `/api/ai/check-pronunciation` | Yes | Word-by-word pronunciation scoring with tongue/mouth placement suggestions. |
-| `POST` | `/api/ai/practice-sentence` | Yes | Generates beginner, intermediate, or advanced conversational sentences. |
-| `POST` | `/api/ai/translate` | Yes | Translates input text directly into the specified target language. |
-| `GET` | `/api/ai/tts-stream` | Yes | Streams multi-script Edge Neural TTS MP3 audio with Redis caching. |
-| `GET` | `/api/ai/key-status` | Yes | Returns active Groq API engine status and healthy key count. |
+
+| Method | Path                          | Auth Required | Description                                                                  |
+| ------ | ----------------------------- | ------------- | ---------------------------------------------------------------------------- |
+| `POST` | `/api/ai/chat`                | Yes           | Sends message turn to Groq Llama 3.3. Returns structured target/native text. |
+| `POST` | `/api/ai/transcribe`          | Yes           | Transcribes base64 audio via Groq Whisper (`whisper-large-v3-turbo`).        |
+| `POST` | `/api/ai/check-pronunciation` | Yes           | Word-by-word pronunciation scoring with tongue/mouth placement suggestions.  |
+| `POST` | `/api/ai/practice-sentence`   | Yes           | Generates beginner, intermediate, or advanced conversational sentences.      |
+| `POST` | `/api/ai/translate`           | Yes           | Translates input text directly into the specified target language.           |
+| `GET`  | `/api/ai/tts-stream`          | Yes           | Streams multi-script Edge Neural TTS MP3 audio with Redis caching.           |
+| `GET`  | `/api/ai/key-status`          | Yes           | Returns active Groq API engine status and healthy key count.                 |
 
 ### 5. Staff & Admin Endpoints (`/api/admin`)
-| Method | Path | Auth Required | Role | Description |
-|---|---|---|---|---|
-| `GET` | `/api/admin/stats` | Yes | Staff | Aggregated platform metrics and live service health. |
-| `GET` | `/api/admin/users` | Yes | Staff | Searchable, paginated user directory with violation filters. |
-| `POST` | `/api/admin/moderation` | Yes | Staff | Applies timeouts, permanent bans, strike resets, or profile wipes. |
-| `DELETE` | `/api/admin/users/:userId` | Yes | Admin | Permanently deletes user account and removes them from Stream. |
-| `PUT` | `/api/admin/users/:userId/role` | Yes | Admin | Promotes user to Sub-Admin (sends invite) or Admin. |
-| `GET` | `/api/admin/reports` | Yes | Staff | Fetches pending or resolved community abuse reports. |
-| `PUT` | `/api/admin/reports/:reportId` | Yes | Staff | Resolves or dismisses an abuse report. |
-| `POST` | `/api/admin/broadcast` | Yes | Admin | Broadcasts creator announcement to Global Community Lounge. |
-| `GET` | `/api/admin/rooms` | Yes | Staff | Lists active language rooms with inactivity timestamps. |
-| `DELETE` | `/api/admin/rooms/:roomId` | Yes | Staff | Force closes and deletes a community chat room. |
+
+| Method   | Path                            | Auth Required | Role  | Description                                                        |
+| -------- | ------------------------------- | ------------- | ----- | ------------------------------------------------------------------ |
+| `GET`    | `/api/admin/stats`              | Yes           | Staff | Aggregated platform metrics and live service health.               |
+| `GET`    | `/api/admin/users`              | Yes           | Staff | Searchable, paginated user directory with violation filters.       |
+| `POST`   | `/api/admin/moderation`         | Yes           | Staff | Applies timeouts, permanent bans, strike resets, or profile wipes. |
+| `DELETE` | `/api/admin/users/:userId`      | Yes           | Admin | Permanently deletes user account and removes them from Stream.     |
+| `PUT`    | `/api/admin/users/:userId/role` | Yes           | Admin | Promotes user to Sub-Admin (sends invite) or Admin.                |
+| `GET`    | `/api/admin/reports`            | Yes           | Staff | Fetches pending or resolved community abuse reports.               |
+| `PUT`    | `/api/admin/reports/:reportId`  | Yes           | Staff | Resolves or dismisses an abuse report.                             |
+| `POST`   | `/api/admin/broadcast`          | Yes           | Admin | Broadcasts creator announcement to Global Community Lounge.        |
+| `GET`    | `/api/admin/rooms`              | Yes           | Staff | Lists active language rooms with inactivity timestamps.            |
+| `DELETE` | `/api/admin/rooms/:roomId`      | Yes           | Staff | Force closes and deletes a community chat room.                    |
 
 ### 6. User Reports Endpoints (`/api/reports`)
-| Method | Path | Auth Required | Description |
-|---|---|---|---|
-| `POST` | `/api/reports` | Yes | Submits a report against another user with violation category and context. |
+
+| Method | Path           | Auth Required | Description                                                                |
+| ------ | -------------- | ------------- | -------------------------------------------------------------------------- |
+| `POST` | `/api/reports` | Yes           | Submits a report against another user with violation category and context. |
 
 ### 7. Live AI WebSocket Stream (`/ws/live-tutor`)
+
 - **Protocol**: `ws://` (development) or `wss://` (production)
 - **Path**: `/ws/live-tutor`
 - **Supported Payload Types**:
@@ -453,9 +475,9 @@ PORT=5000
 NODE_ENV=development
 
 # Database Connection
-MONGO_URI=mongodb://localhost:27017/streamlearn
+MONGO_URI=mongodb://localhost:27017/streamify
 # OR Mongo Atlas:
-# MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/streamlearn?retryWrites=true&w=majority
+# MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/streamify?retryWrites=true&w=majority
 
 # In-Memory Cache (Redis)
 # Leave as default or leave empty to automatically run in graceful offline fallback
@@ -491,6 +513,7 @@ VITE_STREAM_API_KEY=your_stream_api_key
 ## 💻 Installation & Local Development Guide
 
 ### Prerequisites
+
 - **Node.js**: Version 18.18.0 or higher (supports native Fetch, FormData, and ESM).
 - **npm**: Version 9.0.0 or higher.
 - **MongoDB**: A running local MongoDB instance (`mongod`) or a free MongoDB Atlas cluster URI.
@@ -501,6 +524,7 @@ VITE_STREAM_API_KEY=your_stream_api_key
 ### Step-by-Step Setup
 
 #### 1. Clone Repository & Install Dependencies
+
 ```bash
 git clone https://github.com/Umeshh27/streamlearn.git
 cd streamlearn
@@ -508,7 +532,9 @@ cd streamlearn
 # Install root, backend, and frontend dependencies
 npm run build
 ```
-*(Or install manually in each subfolder)*:
+
+_(Or install manually in each subfolder)_:
+
 ```bash
 cd backend && npm install
 cd ../frontend && npm install
@@ -516,7 +542,9 @@ cd ..
 ```
 
 #### 2. Configure Environment Variables
+
 Create the `.env` files in both `backend` and `frontend` directories using the reference values outlined in the [Environment Configuration Reference](#-environment-configuration-reference) section:
+
 - `backend/.env`
 - `frontend/.env`
 
@@ -525,18 +553,22 @@ Create the `.env` files in both `backend` and `frontend` directories using the r
 You can run both backend and frontend concurrently in two separate terminal windows:
 
 **Terminal 1 (Backend API & WebSocket Server):**
+
 ```bash
 cd backend
 npm run dev
 ```
-*The backend server will start on `http://localhost:5000`.*
+
+_The backend server will start on `http://localhost:5000`._
 
 **Terminal 2 (Vite Frontend Development Server):**
+
 ```bash
 cd frontend
 npm run dev
 ```
-*Vite will start on `http://localhost:5173` with automatic API proxying to `localhost:5000`.*
+
+_Vite will start on `http://localhost:5173` with automatic API proxying to `localhost:5000`._
 
 Open your browser at `http://localhost:5173`.
 
@@ -555,7 +587,9 @@ npm start
 ```
 
 ### Static Asset Serving Architecture
+
 In production mode (`NODE_ENV=production`), `backend/src/server.js` automatically locates the compiled frontend build files from `frontend/dist/` and serves them as static assets:
+
 ```javascript
 // backend/src/server.js
 const possibleDistPaths = [
@@ -568,22 +602,24 @@ const distPath = possibleDistPaths.find((p) => fs.existsSync(p));
 if (distPath || process.env.NODE_ENV === "production") {
   app.use(express.static(finalDist));
   app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api") || req.path.startsWith("/ws")) return next();
+    if (req.path.startsWith("/api") || req.path.startsWith("/ws"))
+      return next();
     res.sendFile(path.join(finalDist, "index.html"));
   });
 }
 ```
+
 This enables single-container or single-server deployment (e.g. Render, Railway, AWS EC2, DigitalOcean App Platform) without requiring a separate static host.
 
 ---
 
 ## 🛡 Community Guidelines & Educational Policy
 
-StreamLearn exists solely for educational language learning and intercultural communication. All users agree to abide by the following standards upon entering:
+Streamify exists solely for educational language learning and intercultural communication. All users agree to abide by the following standards upon entering:
 
 1. **Age Requirement**: Users must be **at least 14 years old** to register or participate.
 2. **Zero Tolerance for Unsolicited Dating & Romance**:
-   - StreamLearn is not a dating app. Unsolicited romantic propositions, flirtatious comments, asking for phone numbers/social media handles for dating purposes, or using the AI coach for pickup lines is strictly prohibited.
+   - Streamify is not a dating app. Unsolicited romantic propositions, flirtatious comments, asking for phone numbers/social media handles for dating purposes, or using the AI coach for pickup lines is strictly prohibited.
 3. **Appropriate Webcam & Video Call Etiquette**:
    - Users in video calls must maintain appropriate attire and posture. Indecent exposure, lewd gestures, or offensive background imagery results in an immediate permanent ban.
 4. **Parliamentary Language Only**:
@@ -596,10 +632,12 @@ StreamLearn exists solely for educational language learning and intercultural co
 ---
 
 ## 👥 Contributors & Acknowledgements
+
 - **Lead Creator & Administrator**: Umesh Alla ([umeshalla73@gmail.com](mailto:umeshalla73@gmail.com))
 - **Video & Real-Time Engine**: [GetStream.io](https://getstream.io)
 - **High-Speed Inference**: [Groq Cloud](https://groq.com)
 - **Neural Speech Synthesis**: Microsoft Edge Neural TTS
 
 ---
-*Built with passion to bring language learners together worldwide.* 🌍✨
+
+_Built with passion to bring language learners together worldwide._ 🌍✨
