@@ -198,7 +198,15 @@ export const sendVerificationEmail = async ({ email, code, fullName = "Learner" 
     console.log(`[Nodemailer] Verification email sent to ${email} (Message ID: ${info.messageId})`);
     return { success: true, messageId: info.messageId, mode: "smtp" };
   } catch (error) {
-    console.error(`[Nodemailer] Failed to send email to ${email}:`, error.message || error);
+    if (error.code === "EAUTH" || error.responseCode === 535 || String(error.message).includes("535")) {
+      console.warn(
+        `⚠️ [Nodemailer] Gmail rejected the App Password in .env (535 BadCredentials).\n` +
+        `   • To verify now: Enter code >>> ${code} <<< into the verification box.\n` +
+        `   • To fix live delivery: Generate a fresh 16-character App Password at https://myaccount.google.com/apppasswords and update EMAIL_PASS in backend/.env`
+      );
+    } else {
+      console.error(`[Nodemailer] Failed to send email to ${email}:`, error.message || error);
+    }
     return { success: false, error: error.message, mode: "error" };
   }
 };
