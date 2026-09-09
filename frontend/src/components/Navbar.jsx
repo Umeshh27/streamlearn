@@ -50,12 +50,12 @@ const Navbar = ({ showSidebarToggle = false }) => {
             {/* Brand Logo: Cleanly visible across viewports, hidden on desktop only if static sidebar is expanded */}
             <Link
               to="/"
-              className={`items-center gap-1.5 sm:gap-2 min-w-0 ${
+              className={`items-center gap-1.5 sm:gap-2 shrink-0 ${
                 isOpen && showSidebarToggle && !isChatPage ? "flex md:hidden" : "flex"
               }`}
             >
-              <ShipWheelIcon className="size-6 sm:size-8 text-primary shrink-0" />
-              <span className="text-base sm:text-xl md:text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider drop-shadow-xs truncate">
+              <ShipWheelIcon className="size-6 sm:size-7 text-primary shrink-0" />
+              <span className="text-base sm:text-xl md:text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-normal drop-shadow-xs whitespace-nowrap">
                 LangBridge
               </span>
             </Link>
