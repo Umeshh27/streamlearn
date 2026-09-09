@@ -1,16 +1,44 @@
-# React + Vite
+# 💻 StreamLearn — Frontend Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> This directory contains the modern **React 19 + Vite** single-page application (SPA) client for **StreamLearn**.
 
-Currently, two official plugins are available:
+For complete end-to-end documentation, architecture diagrams, backend specifications, and setup instructions, please refer to the [Root README.md](../README.md).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🎨 Tech Stack Summary
+- **Framework**: React 19 + Vite
+- **Styling**: Tailwind CSS v3 + DaisyUI v4 (multi-theme support with 20+ themes)
+- **Routing**: React Router v7/v8
+- **Server State**: TanStack React Query v5
+- **Client State**: Zustand
+- **Video & Audio Calling**: `@stream-io/video-react-sdk` (WebRTC + tab audio screen share)
+- **Real-Time Chat**: `stream-chat-react` & `stream-chat`
+- **Icons**: Lucide React
+- **Notifications**: React Hot Toast
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Development
 
-## Expanding the ESLint configuration
+```bash
+# Install dependencies
+npm install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Start development server
+npm run dev
+
+# Start development server with LAN host exposure
+npm run dev:host
+
+# Production build
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+## ⚙️ Environment Variables
+
+Create `.env` in this directory:
+```env
+VITE_STREAM_API_KEY=your_stream_api_key
+```
