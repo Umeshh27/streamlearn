@@ -492,7 +492,7 @@ const CallContent = ({ callId, authUser }) => {
         <div className="h-16 sm:h-20 flex-shrink-0 w-full px-2 sm:px-6 flex items-center justify-between bg-[#14151a] border-t border-white/5 z-30">
           <div className="hidden sm:flex items-center gap-2 text-xs text-white/70 font-bold min-w-[180px]">
             <ShipWheel className="size-4 text-primary" />
-            <span>Streamify Meet</span>
+            <span>LangBridge Meet</span>
           </div>
 
           <div className="flex items-center justify-center flex-1 max-w-full overflow-hidden">
