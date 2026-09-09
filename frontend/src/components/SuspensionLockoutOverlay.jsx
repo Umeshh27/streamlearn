@@ -27,7 +27,7 @@ const SuspensionLockoutOverlay = ({ authUser }) => {
 
       if (remaining === 0) {
         clearInterval(interval);
-        toast.success("Suspension period has concluded. Welcome back to Streamify!");
+        toast.success("Suspension period has concluded. Welcome back to LangBridge!");
         queryClient.invalidateQueries({ queryKey: ["authUser"] });
       }
     }, 1000);
@@ -62,7 +62,7 @@ const SuspensionLockoutOverlay = ({ authUser }) => {
                 Account Terminated
               </h2>
               <p className="text-sm text-base-content/70 leading-relaxed max-w-md mx-auto">
-                Your account has been permanently suspended due to repeated or severe violations of Streamify Community Guidelines.
+                Your account has been permanently suspended due to repeated or severe violations of LangBridge Community Guidelines.
               </p>
             </div>
 
@@ -82,7 +82,7 @@ const SuspensionLockoutOverlay = ({ authUser }) => {
                 className="btn btn-error btn-block font-bold text-error-content shadow-lg gap-2"
               >
                 <LogOutIcon className="size-4" />
-                {isLoggingOut ? "Logging out..." : "Log Out of Streamify"}
+                {isLoggingOut ? "Logging out..." : "Log Out of LangBridge"}
               </button>
             </div>
           </>
