@@ -56,7 +56,7 @@ const Navbar = ({ showSidebarToggle = false }) => {
             >
               <ShipWheelIcon className="size-6 sm:size-8 text-primary shrink-0" />
               <span className="text-base sm:text-xl md:text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider drop-shadow-xs truncate">
-                Streamify
+                LangBridge
               </span>
             </Link>
           </div>
