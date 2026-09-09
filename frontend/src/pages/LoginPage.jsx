@@ -43,7 +43,7 @@ const LoginPage = () => {
           <div className="mb-6 flex items-center justify-start gap-2.5">
             <ShipWheelIcon className="size-8 text-primary" />
             <span className="text-2xl sm:text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-              Streamify
+              LangBridge
             </span>
           </div>
 
@@ -165,7 +165,7 @@ const LoginPage = () => {
             <div className="rounded-2xl overflow-hidden shadow-xl border border-base-300/60 bg-base-100">
               <img
                 src="/rules-community.jpg"
-                alt="Streamify Language Community"
+                alt="LangBridge Language Community"
                 className="w-full h-auto object-cover"
               />
             </div>
