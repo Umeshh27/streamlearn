@@ -47,7 +47,7 @@ const RULE_CATEGORIES = [
     color: "primary",
     rules: [
       {
-        text: "Users must be **at least 14 years old** before entering or registering on Streamify.",
+        text: "Users must be **at least 14 years old** before entering or registering on LangBridge.",
       },
       {
         text: "This website is **100% free** and you are required to register in order to actively participate.",
@@ -129,13 +129,13 @@ const RULE_CATEGORIES = [
     color: "warning",
     rules: [
       {
-        text: "Users retain ownership of content they create, but grant Streamify a **license to transmit and display** content within the service.",
+        text: "Users retain ownership of content they create, but grant LangBridge a **license to transmit and display** content within the service.",
       },
       {
         text: "**Do not post copyrighted materials**, unauthorized intellectual property, or content that infringes on third-party rights.",
       },
       {
-        text: "Streamify reserves the right to **moderate, remove content, or suspend accounts** that violate these guidelines at its sole discretion.",
+        text: "LangBridge reserves the right to **moderate, remove content, or suspend accounts** that violate these guidelines at its sole discretion.",
       },
     ],
   },
@@ -171,7 +171,7 @@ const RulesPage = () => {
           <Link to="/" className="flex items-center gap-2.5">
             <ShipWheelIcon className="size-7 text-primary" />
             <span className="text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-              Streamify
+              LangBridge
             </span>
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -204,7 +204,7 @@ const RulesPage = () => {
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight text-base-content leading-[1.1]">
                 Welcome to{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-                  Streamify
+                  LangBridge
                 </span>
               </h1>
 
@@ -254,7 +254,7 @@ const RulesPage = () => {
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-base-300/60 bg-base-100 min-h-[200px]">
                   <img
                     src="/rules-community.jpg"
-                    alt="Streamify Global Community"
+                    alt="LangBridge Global Community"
                     className="w-full h-auto object-cover block"
                     loading="eager"
                   />
@@ -404,7 +404,7 @@ const RulesPage = () => {
                   <div className="w-48 sm:w-56 rounded-2xl overflow-hidden border border-base-300/50 shadow-md">
                     <img
                       src="/community-learners.jpg"
-                      alt="Join the Streamify community"
+                      alt="Join the LangBridge community"
                       className="w-full h-auto object-cover"
                       loading="lazy"
                     />
@@ -454,7 +454,7 @@ const RulesPage = () => {
                   >
                     <Sparkles className={`size-4 sm:size-5 shrink-0 ${agreed ? "text-primary-content" : "text-base-content/60"}`} />
                     <span className={agreed ? "text-primary-content font-extrabold text-sm sm:text-base truncate" : "text-base-content/85 font-bold text-sm sm:text-base truncate"}>
-                      Accept &amp; Enter Streamify
+                      Accept &amp; Enter LangBridge
                     </span>
                     <ArrowRightIcon className={`size-4 sm:size-5 shrink-0 ${agreed ? "text-primary-content" : "text-base-content/60"}`} />
                   </button>
@@ -478,11 +478,11 @@ const RulesPage = () => {
           <div className="flex items-center justify-center gap-2 mb-3">
             <ShipWheelIcon className="size-5 text-primary/60" />
             <span className="text-sm font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary/60 to-secondary/60 tracking-wider">
-              Streamify
+              LangBridge
             </span>
           </div>
           <p className="text-xs text-base-content/45">
-            © {new Date().getFullYear()} Streamify. Dedicated to Global Language
+            © {new Date().getFullYear()} LangBridge. Dedicated to Global Language
             Exchange & Safe Peer Learning.
           </p>
           <p className="text-[11px] text-base-content/30">
