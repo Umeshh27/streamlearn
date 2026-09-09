@@ -159,7 +159,7 @@ export async function verifyEmail(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: "Email verified successfully! Welcome to Streamify.",
+      message: "Email verified successfully! Welcome to LangBridge.",
       user,
       streamToken,
     });
@@ -315,7 +315,7 @@ export async function onboard(req, res) {
     const numAge = Number(age);
     if (isNaN(numAge) || numAge < 14 || numAge > 120) {
       return res.status(400).json({
-        message: "You must be at least 14 years old to join Streamify.",
+        message: "You must be at least 14 years old to join LangBridge.",
       });
     }
 
