@@ -43,7 +43,7 @@ const OnboardingPage = () => {
 
     const ageNum = Number(formState.age);
     if (!formState.age || isNaN(ageNum) || ageNum < 14) {
-      toast.error("You must be at least 14 years old to join Streamify.");
+      toast.error("You must be at least 14 years old to join LangBridge.");
       return;
     }
 
