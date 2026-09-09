@@ -84,10 +84,10 @@ const SubAdminInvitationModal = ({ authUser }) => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="badge bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-xs font-black tracking-wider uppercase">
+                <span className="badge badge-info text-info-content text-xs font-black tracking-wider uppercase">
                   Staff Appointment
                 </span>
-                <span className="badge badge-warning badge-sm font-bold uppercase text-[10px]">
+                <span className="badge badge-warning text-warning-content badge-sm font-bold uppercase text-[10px]">
                   Action Required
                 </span>
               </div>
@@ -102,7 +102,7 @@ const SubAdminInvitationModal = ({ authUser }) => {
         <div className="p-6 overflow-y-auto space-y-5 text-sm">
           <div className="bg-base-200/80 p-4 rounded-2xl border border-base-300">
             <p className="font-semibold text-base-content leading-relaxed">
-              Hello <span className="font-black text-primary">{authUser?.fullName || "Learner"}</span>, you have been officially selected by the Head Administrator to join the LangBridge moderation team as a <strong className="text-cyan-400 font-bold">Sub-Admin</strong>.
+              Hello <span className="font-black text-primary">{authUser?.fullName || "Learner"}</span>, you have been officially selected by the Head Administrator to join the LangBridge moderation team as a <strong className="text-primary font-bold">Sub-Admin</strong>.
             </p>
             <p className="text-xs text-base-content/70 mt-1">
               Before your staff privileges can be activated, please thoroughly review your duties and security accountability requirements below.
@@ -195,7 +195,7 @@ const SubAdminInvitationModal = ({ authUser }) => {
               type="button"
               onClick={handleDecline}
               disabled={isResponding}
-              className="btn btn-sm btn-outline btn-error font-bold flex-1 sm:flex-none gap-1.5"
+              className="btn btn-sm bg-error/15 hover:bg-error text-error hover:text-error-content border border-error/30 font-bold flex-1 sm:flex-none gap-1.5 shadow-2xs transition-all"
             >
               <XCircleIcon className="size-4" />
               <span>Decline</span>
