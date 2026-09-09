@@ -102,7 +102,7 @@ const SubAdminInvitationModal = ({ authUser }) => {
         <div className="p-6 overflow-y-auto space-y-5 text-sm">
           <div className="bg-base-200/80 p-4 rounded-2xl border border-base-300">
             <p className="font-semibold text-base-content leading-relaxed">
-              Hello <span className="font-black text-primary">{authUser?.fullName || "Learner"}</span>, you have been officially selected by the Head Administrator to join the Streamify moderation team as a <strong className="text-cyan-400 font-bold">Sub-Admin</strong>.
+              Hello <span className="font-black text-primary">{authUser?.fullName || "Learner"}</span>, you have been officially selected by the Head Administrator to join the LangBridge moderation team as a <strong className="text-cyan-400 font-bold">Sub-Admin</strong>.
             </p>
             <p className="text-xs text-base-content/70 mt-1">
               Before your staff privileges can be activated, please thoroughly review your duties and security accountability requirements below.
