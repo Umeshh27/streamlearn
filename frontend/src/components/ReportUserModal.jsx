@@ -10,7 +10,7 @@ const REPORT_REASONS = [
   { id: "vulgar_language", label: "Vulgar / Obscene Language", desc: "Profanity, offensive sexual comments, or slurs" },
   { id: "spam_flooding", label: "Spam & Advertising", desc: "Flooding messages, unsolicited links, or product promos" },
   { id: "dating_unsolicited", label: "Unwanted Dating / Solicitation", desc: "Treating the educational platform as a dating service" },
-  { id: "other", label: "Other Rule Violation", desc: "Behavior violating Streamify community guidelines" },
+  { id: "other", label: "Other Rule Violation", desc: "Behavior violating LangBridge community guidelines" },
 ];
 
 const ReportUserModal = ({ targetUser, context = "Community Lounge", onClose }) => {
@@ -55,7 +55,7 @@ const ReportUserModal = ({ targetUser, context = "Community Lounge", onClose }) 
             </div>
             <h3 className="text-xl font-bold text-base-content">Report Submitted</h3>
             <p className="text-xs text-base-content/70 max-w-xs mx-auto leading-relaxed">
-              Thank you for keeping Streamify a respectful learning space. Our creator and moderation team will review this report promptly.
+              Thank you for keeping LangBridge a respectful learning space. Our creator and moderation team will review this report promptly.
             </p>
             <button onClick={onClose} className="btn btn-primary btn-sm font-bold px-6 shadow-md">
               Done
