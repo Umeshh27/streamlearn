@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
     age: {
       type: Number,
-      min: [14, "You must be at least 14 years old to join StreamLearn"],
+      min: [14, "You must be at least 14 years old to join LangBridge"],
       default: null,
     },
     nameColor: {
