@@ -20,10 +20,10 @@ const Sidebar = ({ onNavigateMobile }) => {
   return (
     <aside className="w-64 bg-base-200 border-r border-base-300 flex flex-col h-full max-h-full shrink-0 z-20 overflow-y-auto">
       {/* BRAND HEADER & MOBILE CLOSE BUTTON */}
-      <div className="p-4 sm:p-5 border-b border-base-300 flex items-center justify-between">
-        <Link to="/" onClick={handleLinkClick} className="flex items-center gap-2.5 min-w-0">
-          <ShipWheelIcon className="size-8 sm:size-9 text-primary shrink-0" />
-          <span className="text-2xl sm:text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider truncate">
+      <div className="p-3.5 sm:p-4 border-b border-base-300 flex items-center justify-between gap-2">
+        <Link to="/" onClick={handleLinkClick} className="flex items-center gap-2 shrink-0">
+          <ShipWheelIcon className="size-7 sm:size-8 text-primary shrink-0" />
+          <span className="text-xl sm:text-2xl font-black font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight whitespace-nowrap">
             LangBridge
           </span>
         </Link>
@@ -31,7 +31,7 @@ const Sidebar = ({ onNavigateMobile }) => {
         <button
           type="button"
           onClick={onNavigateMobile}
-          className="btn btn-ghost btn-circle btn-sm md:hidden text-base-content/70 hover:text-base-content hover:bg-base-300 transition-colors"
+          className="btn btn-ghost btn-circle btn-sm md:hidden text-base-content/70 hover:text-base-content hover:bg-base-300 transition-colors shrink-0"
           title="Close Navigation"
           aria-label="Close sidebar"
         >
