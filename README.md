@@ -1,6 +1,6 @@
-# 🌐 Streamify — Real-Time Language Exchange & AI Pronunciation Platform
+# 🌐 LangBridge — Real-Time Language Exchange & AI Pronunciation Platform
 
-> **Streamify** - is an enterprise-grade, full-stack language learning and cultural exchange platform. It combines peer-to-peer social networking, real-time multilingual community lounges, WebRTC 1-on-1 HD video calling with tab audio screen sharing, and an AI-powered Voice Tutor and Pronunciation Lab with sub-second neural speech synthesis.
+> **LangBridge** is an enterprise-grade, full-stack language learning and cultural exchange platform. It combines peer-to-peer social networking, real-time multilingual community lounges, WebRTC 1-on-1 HD video calling with tab audio screen sharing, and an AI-powered Voice Tutor and Pronunciation Lab with sub-second neural speech synthesis.
 
 ---
 
@@ -31,7 +31,7 @@
 
 Learning a foreign language in isolation often leads to grammar knowledge without conversational fluency. Traditional apps rely heavily on text-based flashcards and multiple-choice drills, leaving learners unprepared for spontaneous spoken interaction.
 
-**Streamify** bridges this gap through two foundational pillars:
+**LangBridge** bridges this gap through two foundational pillars:
 
 1. **Authentic Human Immersion**: Connects learners with native speakers and language partners across the globe via live language lounges, text chat, and synchronized HD video calling.
 2. **AI-Assisted Self-Paced Practice**: Provides a 24/7 private environment where learners can practice speaking, receive instant word-by-word pronunciation scoring, and obtain tongue and mouth placement feedback in their native tongue before speaking with human partners.
@@ -116,7 +116,7 @@ graph TD
 
 ### Frontend Architecture
 
-| Technology                  | Purpose in Streamify                          | Why This Tech Was Chosen                                                                                                                                              |
+| Technology                  | Purpose in LangBridge                         | Why This Tech Was Chosen                                                                                                                                              |
 | --------------------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **React 19**                | User interface & reactive component hierarchy | Latest concurrent rendering architecture, transitions, and component optimizations for real-time applications.                                                        |
 | **Vite**                    | Modern build tool & development server        | Sub-millisecond Hot Module Replacement (HMR) and optimized Rollup production bundling, far faster than Webpack.                                                       |
@@ -132,7 +132,7 @@ graph TD
 
 ### Backend Architecture
 
-| Technology                            | Purpose in Streamify                  | Why This Tech Was Chosen                                                                                                                                                        |
+| Technology                            | Purpose in LangBridge                 | Why This Tech Was Chosen                                                                                                                                                        |
 | ------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Node.js (ES Modules)**              | Asynchronous server runtime           | High-throughput non-blocking I/O ideal for handling concurrent REST requests and WebSocket streams. Native ESM syntax (`import`/`export`).                                      |
 | **Express 4.21**                      | RESTful HTTP API framework            | Robust, unopinionated routing, middleware chaining, and battle-tested HTTP handling.                                                                                            |
@@ -615,11 +615,11 @@ This enables single-container or single-server deployment (e.g. Render, Railway,
 
 ## 🛡 Community Guidelines & Educational Policy
 
-Streamify exists solely for educational language learning and intercultural communication. All users agree to abide by the following standards upon entering:
+LangBridge exists solely for educational language learning and intercultural communication. All users agree to abide by the following standards upon entering:
 
 1. **Age Requirement**: Users must be **at least 14 years old** to register or participate.
 2. **Zero Tolerance for Unsolicited Dating & Romance**:
-   - Streamify is not a dating app. Unsolicited romantic propositions, flirtatious comments, asking for phone numbers/social media handles for dating purposes, or using the AI coach for pickup lines is strictly prohibited.
+   - LangBridge is not a dating app. Unsolicited romantic propositions, flirtatious comments, asking for phone numbers/social media handles for dating purposes, or using the AI coach for pickup lines is strictly prohibited.
 3. **Appropriate Webcam & Video Call Etiquette**:
    - Users in video calls must maintain appropriate attire and posture. Indecent exposure, lewd gestures, or offensive background imagery results in an immediate permanent ban.
 4. **Parliamentary Language Only**:
