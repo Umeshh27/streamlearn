@@ -13,6 +13,8 @@ const useLogout = () => {
     mutationFn: logout,
     onSuccess: () => {
       toast.success("Logged out successfully!");
+      queryClient.setQueryData(["authUser"], null);
+      queryClient.removeQueries({ queryKey: ["streamToken"] });
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
     onError: (err) => {
