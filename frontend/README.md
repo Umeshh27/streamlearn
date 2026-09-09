@@ -1,6 +1,6 @@
-# 💻 StreamLearn — Frontend Client
+# 💻 Streamify — Frontend Client
 
-> This directory contains the modern **React 19 + Vite** single-page application (SPA) client for **StreamLearn**.
+> This directory contains the modern **React 19 + Vite** single-page application (SPA) client for **Streamify**.
 
 For complete end-to-end documentation, architecture diagrams, backend specifications, and setup instructions, please refer to the [Root README.md](../README.md).
 
