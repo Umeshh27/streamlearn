@@ -154,6 +154,18 @@ const getWelcomeMessage = (targetLang, nativeLang, name = "Learner") => {
   };
 };
 
+const syncWelcomeGreeting = (msg, targetLang, nativeLang, name = "Learner") => {
+  if (!msg || !msg.id || !msg.id.startsWith("msg-welcome")) return msg;
+  const fresh = getWelcomeMessage(targetLang, nativeLang, name);
+  return {
+    ...msg,
+    targetText: fresh.targetText,
+    spokenAudioText: fresh.spokenAudioText,
+    nativeExplanation: fresh.nativeExplanation,
+    nativeAudioText: fresh.nativeAudioText,
+  };
+};
+
 const sanitizeChatMessage = (msg, targetLang = "Spanish") => {
   if (!msg || msg.sender === "user") return msg;
   let targetText = msg.targetText || "";
@@ -255,7 +267,9 @@ export default function VoiceAssistantPage() {
       const s = localStorage.getItem(`streamlearn_chat_${authUser?._id || "guest"}_${t}`);
       if (s) {
         const p = JSON.parse(s);
-        if (Array.isArray(p) && p.length > 0) return p.map((m) => sanitizeChatMessage(m, t));
+        if (Array.isArray(p) && p.length > 0) {
+          return p.map((m) => syncWelcomeGreeting(sanitizeChatMessage(m, t), t, n, userName));
+        }
       }
     } catch (e) {}
     return [getWelcomeMessage(t, n, userName)];
@@ -305,7 +319,11 @@ export default function VoiceAssistantPage() {
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setChatHistory(parsed.map((m) => sanitizeChatMessage(m, learningLanguage)));
+            setChatHistory(
+              parsed.map((m) =>
+                syncWelcomeGreeting(sanitizeChatMessage(m, learningLanguage), learningLanguage, nativeLanguage, userName)
+              )
+            );
             hydratedKeyRef.current = currentKey;
             return;
           }
@@ -316,6 +334,26 @@ export default function VoiceAssistantPage() {
       hydratedKeyRef.current = currentKey;
     }
   }, [authUser?._id, learningLanguage, nativeLanguage, userName, isAuthLoading]);
+
+  // Dynamically sync greeting message whenever userName updates (e.g. when authUser loads or user edits username/display name)
+  useEffect(() => {
+    if (!userName || userName === "Learner") return;
+
+    setChatHistory((prev) => {
+      let changed = false;
+      const next = prev.map((msg) => {
+        if (msg.id && msg.id.startsWith("msg-welcome")) {
+          const synced = syncWelcomeGreeting(msg, learningLanguage, nativeLanguage, userName);
+          if (synced.targetText !== msg.targetText) {
+            changed = true;
+            return synced;
+          }
+        }
+        return msg;
+      });
+      return changed ? next : prev;
+    });
+  }, [userName, learningLanguage, nativeLanguage]);
 
   // Persist chat history to localStorage only after hydration has taken place for current key
   useEffect(() => {
@@ -390,7 +428,11 @@ export default function VoiceAssistantPage() {
       if (s) {
         const p = JSON.parse(s);
         if (Array.isArray(p) && p.length > 0) {
-          setChatHistory(p.map((m) => sanitizeChatMessage(m, newTarget)));
+          setChatHistory(
+            p.map((m) =>
+              syncWelcomeGreeting(sanitizeChatMessage(m, newTarget), newTarget, nativeLanguage, userName)
+            )
+          );
           toast.success(`Switched to ${newTarget}!`);
           return;
         }
@@ -577,7 +619,7 @@ export default function VoiceAssistantPage() {
     if (UNPARLIAMENTARY_CLIENT_REGEX.test(text)) {
       toast("⚠️ Please maintain clean and parliamentary communication.", { icon: "🛡️", duration: 4000 });
     } else if (DATING_ADVICE_CLIENT_REGEX.test(text)) {
-      toast("ℹ️ Streamify AI is an educational coach and does not provide dating or love advice.", { icon: "🎓", duration: 4500 });
+      toast("ℹ️ LangBridge AI is an educational coach and does not provide dating or love advice.", { icon: "🎓", duration: 4500 });
     }
 
     isSendingRef.current = true;
@@ -815,7 +857,7 @@ export default function VoiceAssistantPage() {
             </div>
             <div className="min-w-0">
               <h1 className="text-xs sm:text-base font-bold text-base-content flex items-center gap-1.5 truncate">
-                Streamify AI <span className="badge badge-primary badge-xs font-semibold text-[9px] sm:text-[10px] shrink-0">Language Coach</span>
+                LangBridge AI <span className="badge badge-primary badge-xs font-semibold text-[9px] sm:text-[10px] shrink-0">Language Coach</span>
               </h1>
               <p className="text-[9px] sm:text-xs text-base-content/60 truncate hidden xs:block">
                 Speak • Learn • Master pronunciation
