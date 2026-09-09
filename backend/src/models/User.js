@@ -37,9 +37,30 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    age: {
+      type: Number,
+      min: [14, "You must be at least 14 years old to join StreamLearn"],
+      default: null,
+    },
+    nameColor: {
+      type: String,
+      default: "",
+    },
     isOnboarded: {
       type: Boolean,
       default: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationCode: {
+      type: String,
+      default: null,
+    },
+    verificationCodeExpiresAt: {
+      type: Date,
+      default: null,
     },
     friends: [
       {
@@ -47,6 +68,47 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    role: {
+      type: String,
+      enum: ["user", "subadmin", "admin"],
+      default: "user",
+    },
+    strikeCount: {
+      type: Number,
+      default: 0,
+    },
+    suspendedUntil: {
+      type: Date,
+      default: null,
+    },
+    suspensionReason: {
+      type: String,
+      default: "",
+    },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+    subadminInvitation: {
+      status: {
+        type: String,
+        enum: ["pending", "accepted", "rejected"],
+        default: null,
+      },
+      invitedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: null,
+      },
+      invitedAt: {
+        type: Date,
+        default: null,
+      },
+      respondedAt: {
+        type: Date,
+        default: null,
+      },
+    },
   },
   { timestamps: true }
 );
