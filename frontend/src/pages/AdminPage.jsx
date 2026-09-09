@@ -328,7 +328,7 @@ const AdminPage = () => {
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <h1 className="text-sm sm:text-lg font-black tracking-tight flex items-center gap-1.5 truncate">
-                  <span className="truncate">Streamify Command Center</span>
+                  <span className="truncate">LangBridge Command Center</span>
                   <span
                     className={`badge badge-xs sm:badge-sm font-bold uppercase tracking-wider text-[9px] sm:text-[10px] flex items-center gap-1 shrink-0 ${
                       isAdmin
@@ -1816,7 +1816,7 @@ const AdminPage = () => {
                 Community Standards & Safety Reference
               </h3>
               <p className="text-xs text-base-content/70 leading-relaxed">
-                Streamify is an inclusive global learning community. Enforce progressive discipline:
+                LangBridge is an inclusive global learning community. Enforce progressive discipline:
               </p>
               <ul className="text-xs text-base-content/70 space-y-1 list-disc list-inside">
                 <li>
