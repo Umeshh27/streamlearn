@@ -317,7 +317,7 @@ const AdminPage = () => {
   const inactiveRoomsCount = roomsList.filter((r) => r.isInactive).length;
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content pb-16">
+    <div className="min-h-screen w-full flex-1 flex flex-col bg-base-100 text-base-content pb-16">
       {/* ── TOP COMMAND HEADER ────────────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-base-200/90 backdrop-blur-md border-b border-base-300 shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex flex-wrap items-center justify-between gap-2.5 sm:gap-4">
@@ -327,8 +327,9 @@ const AdminPage = () => {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <h1 className="text-sm sm:text-lg font-black tracking-tight flex items-center gap-1.5 truncate">
-                  <span className="truncate">LangBridge Command Center</span>
+                <h1 className="text-sm sm:text-lg font-black tracking-tight flex items-center gap-1.5 min-w-0">
+                  <span className="whitespace-nowrap font-black">LangBridge</span>
+                  <span className="text-base-content/80 font-bold truncate">Command Center</span>
                   <span
                     className={`badge badge-xs sm:badge-sm font-bold uppercase tracking-wider text-[9px] sm:text-[10px] flex items-center gap-1 shrink-0 ${
                       isAdmin
@@ -366,7 +367,7 @@ const AdminPage = () => {
             <button
               onClick={handleRefreshAll}
               disabled={isRefetchingStats || isRefetchingReports || isRefetchingUsers || isRefetchingRooms}
-              className="btn btn-xs sm:btn-sm btn-ghost gap-1 sm:gap-1.5 text-xs font-semibold px-2 sm:px-3"
+              className="btn btn-xs sm:btn-sm bg-base-100 hover:bg-base-200 border border-base-300 text-base-content font-bold gap-1 sm:gap-1.5 text-xs px-2.5 sm:px-3 shadow-2xs transition-all"
               title="Refresh all metrics"
             >
               <RefreshCwIcon
@@ -379,7 +380,7 @@ const AdminPage = () => {
 
             <button
               onClick={() => navigate("/")}
-              className="btn btn-xs sm:btn-sm btn-ghost border border-base-300 hover:border-primary hover:bg-base-200 text-base-content hover:text-primary gap-1 sm:gap-1.5 text-xs font-bold px-2 sm:px-3"
+              className="btn btn-xs sm:btn-sm bg-base-100 hover:bg-base-200 border border-base-300 hover:border-primary text-base-content hover:text-primary gap-1 sm:gap-1.5 text-xs font-bold px-2.5 sm:px-3 shadow-2xs transition-all"
             >
               <ArrowLeftIcon className="size-3 sm:size-3.5" />
               <span>Back to App</span>
@@ -575,7 +576,7 @@ const AdminPage = () => {
                   <span className="text-xs font-bold uppercase tracking-wider">In Cooldown</span>
                   <ClockIcon className="size-4 text-warning" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-warning">
+                <div className="text-2xl sm:text-3xl font-black text-base-content">
                   {stats.suspendedUsers ?? 0}
                 </div>
                 <div className="text-[11px] text-base-content/50 font-medium">5m / 10m timeouts</div>
@@ -724,37 +725,52 @@ const AdminPage = () => {
             </div>
 
             {/* Moderation Rules & Discipline Flowchart reference */}
-            <div className="bg-base-200/60 border border-base-300 rounded-3xl p-6 shadow-sm space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-wider text-base-content/60">
+            <div className="bg-base-200 border border-base-300 rounded-3xl p-5 sm:p-6 shadow-sm space-y-3">
+              <h4 className="text-xs font-black uppercase tracking-wider text-base-content/80">
                 Disciplinary Enforcement Structure
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                <div className="p-4 rounded-2xl bg-warning/10 border border-warning/20 space-y-1">
-                  <div className="flex items-center gap-2 font-bold text-warning">
-                    <ClockIcon className="size-4" />
-                    <span>Strike 1: 5-Min Cooldown</span>
+                <div className="p-4 rounded-2xl bg-base-100 border border-base-300 space-y-2 shadow-xs transition-all">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-base-content">
+                      <ClockIcon className="size-4 text-warning shrink-0" />
+                      <span>Strike 1: 5-Min Cooldown</span>
+                    </div>
+                    <span className="badge badge-warning text-warning-content badge-xs font-bold px-2 py-1 shrink-0">
+                      Timeout
+                    </span>
                   </div>
-                  <p className="text-base-content/70 text-[11px] leading-relaxed">
+                  <p className="text-base-content/75 text-xs leading-relaxed">
                     User screen is blanked with the suspension lockout countdown. Access automatically restores after 5 minutes.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-orange-500/10 border border-orange-500/20 space-y-1">
-                  <div className="flex items-center gap-2 font-bold text-orange-500">
-                    <AlertTriangleIcon className="size-4" />
-                    <span>Strike 2: 10-Min Cooldown</span>
+                <div className="p-4 rounded-2xl bg-base-100 border border-base-300 space-y-2 shadow-xs transition-all">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-base-content">
+                      <AlertTriangleIcon className="size-4 text-orange-500 shrink-0" />
+                      <span>Strike 2: 10-Min Cooldown</span>
+                    </div>
+                    <span className="badge bg-orange-500 text-white border-none badge-xs font-bold px-2 py-1 shrink-0">
+                      Warning
+                    </span>
                   </div>
-                  <p className="text-base-content/70 text-[11px] leading-relaxed">
+                  <p className="text-base-content/75 text-xs leading-relaxed">
                     Final warning overlay with a 10-minute timer. Clearly informs the user that a 3rd strike results in permanent ban.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-error/10 border border-error/20 space-y-1">
-                  <div className="flex items-center gap-2 font-bold text-error">
-                    <BanIcon className="size-4" />
-                    <span>Strike 3: Permanent Ban</span>
+                <div className="p-4 rounded-2xl bg-base-100 border border-base-300 space-y-2 shadow-xs transition-all">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-base-content">
+                      <BanIcon className="size-4 text-error shrink-0" />
+                      <span>Strike 3: Permanent Ban</span>
+                    </div>
+                    <span className="badge badge-error text-error-content badge-xs font-bold px-2 py-1 shrink-0">
+                      Terminated
+                    </span>
                   </div>
-                  <p className="text-base-content/70 text-[11px] leading-relaxed">
+                  <p className="text-base-content/75 text-xs leading-relaxed">
                     Account is terminated permanently. User is locked out of all rooms and cannot interact with the platform.
                   </p>
                 </div>
@@ -780,15 +796,15 @@ const AdminPage = () => {
               </div>
 
               {/* Status Filter Tabs */}
-              <div className="flex items-center gap-1.5 bg-base-100 p-1 rounded-xl border border-base-300">
+              <div className="flex items-center gap-1.5 bg-base-100 p-1 rounded-xl border border-base-300 shadow-2xs">
                 {["all", "pending", "resolved", "dismissed"].map((s) => (
                   <button
                     key={s}
                     onClick={() => setReportFilterStatus(s)}
-                    className={`btn btn-xs rounded-lg font-bold capitalize ${
+                    className={`btn btn-xs rounded-lg font-bold capitalize transition-all ${
                       reportFilterStatus === s
                         ? "btn-primary text-primary-content shadow-xs"
-                        : "btn-ghost text-base-content/70 hover:text-base-content hover:bg-base-200"
+                        : "bg-base-200 hover:bg-base-300 border border-base-300/80 text-base-content hover:text-base-content"
                     }`}
                   >
                     {s}
@@ -965,7 +981,7 @@ const AdminPage = () => {
                                     rep._id
                                   )
                                 }
-                                className="btn btn-xs btn-outline btn-warning font-bold gap-1 shadow-sm"
+                                className="btn btn-xs bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold gap-1 shadow-xs border border-amber-600/30"
                               >
                                 <AlertTriangleIcon className="size-3" />
                                 <span>10m Timeout (Strike 2)</span>
@@ -1000,7 +1016,7 @@ const AdminPage = () => {
                                 actionTaken: "Dismissed by admin - No violation found",
                               })
                             }
-                            className="btn btn-xs btn-ghost text-base-content/60 hover:text-base-content font-bold gap-1"
+                            className="btn btn-xs bg-base-100 hover:bg-base-300 border border-base-300 text-base-content font-bold gap-1 shadow-2xs transition-all"
                           >
                             <XCircleIcon className="size-3.5" />
                             <span>Dismiss Report</span>
@@ -1062,10 +1078,10 @@ const AdminPage = () => {
                         setUserFilterStatus(f.id);
                         setUserPage(1);
                       }}
-                      className={`btn btn-xs rounded-xl font-bold whitespace-nowrap ${
+                      className={`btn btn-xs rounded-xl font-bold whitespace-nowrap transition-all ${
                         userFilterStatus === f.id
                           ? "btn-primary text-primary-content shadow-xs"
-                          : "btn-ghost text-base-content/70 hover:text-base-content hover:bg-base-200"
+                          : "bg-base-100 hover:bg-base-300 border border-base-300 text-base-content hover:text-base-content"
                       }`}
                     >
                       {f.label}
@@ -1141,7 +1157,7 @@ const AdminPage = () => {
                                   <ShieldCheckIcon className="size-2.5 fill-current" />
                                 </span>
                               ) : u.subadminInvitation?.status === "pending" ? (
-                                <span className="badge bg-amber-500/20 text-amber-500 border border-amber-500/40 badge-sm font-bold uppercase text-[9px] gap-1 animate-pulse">
+                                <span className="badge badge-warning text-warning-content badge-sm font-bold uppercase text-[9px] gap-1 animate-pulse">
                                   <ClockIcon className="size-2.5" />
                                   Invited (Pending)
                                 </span>
@@ -1259,7 +1275,7 @@ const AdminPage = () => {
                                   "First warning for disruptive behavior. 5-minute timeout."
                                 )
                               }
-                              className="btn btn-xs btn-outline btn-warning font-bold gap-1"
+                              className="btn btn-xs bg-amber-400 hover:bg-amber-500 text-slate-950 border border-amber-500/50 font-bold gap-1 shadow-2xs transition-all"
                               title="Trigger 5-minute blank lockout overlay"
                             >
                               <ClockIcon className="size-3" />
@@ -1275,7 +1291,7 @@ const AdminPage = () => {
                                   "Second warning for repeated misconduct. 10-minute timeout."
                                 )
                               }
-                              className="btn btn-xs btn-outline btn-warning font-bold gap-1"
+                              className="btn btn-xs bg-orange-500 hover:bg-orange-600 text-white border border-orange-600/50 font-bold gap-1 shadow-2xs transition-all"
                               title="Trigger 10-minute blank lockout overlay"
                             >
                               <AlertTriangleIcon className="size-3" />
@@ -1286,7 +1302,7 @@ const AdminPage = () => {
                             {u.isBanned ? (
                               <button
                                 onClick={() => openModerationModal(u, "unban", "Restored access by admin")}
-                                className="btn btn-xs btn-success font-bold gap-1 text-success-content"
+                                className="btn btn-xs btn-success font-bold gap-1 text-success-content shadow-2xs"
                               >
                                 <UnlockIcon className="size-3" />
                                 <span>Unban User</span>
@@ -1301,7 +1317,7 @@ const AdminPage = () => {
                                       "Permanent suspension for egregious rules violation"
                                     )
                                   }
-                                  className="btn btn-xs btn-outline btn-error font-bold gap-1"
+                                  className="btn btn-xs btn-error text-error-content font-bold gap-1 shadow-2xs hover:brightness-110"
                                 >
                                   <BanIcon className="size-3" />
                                   <span>Ban User</span>
@@ -1313,7 +1329,7 @@ const AdminPage = () => {
                             {u.strikeCount > 0 && (
                               <button
                                 onClick={() => openModerationModal(u, "clear_strikes", "Strikes forgiven by admin")}
-                                className="btn btn-xs btn-ghost text-xs text-base-content/60 hover:text-success font-semibold gap-1"
+                                className="btn btn-xs bg-base-100 hover:bg-success/15 border border-base-300 hover:border-success/50 text-base-content hover:text-success font-bold gap-1 shadow-2xs transition-all"
                               >
                                 <SparklesIcon className="size-3" />
                                 <span>Clear Strikes</span>
@@ -1326,7 +1342,7 @@ const AdminPage = () => {
                                 onClick={() =>
                                   openModerationModal(u, "force_verify", "Verified manually by admin")
                                 }
-                                className="btn btn-xs btn-ghost text-xs text-base-content/60 hover:text-primary font-semibold gap-1"
+                                className="btn btn-xs bg-base-100 hover:bg-primary/15 border border-base-300 hover:border-primary/50 text-base-content hover:text-primary font-bold gap-1 shadow-2xs transition-all"
                               >
                                 <CheckCircle2Icon className="size-3" />
                                 <span>Force Verify</span>
@@ -1339,7 +1355,7 @@ const AdminPage = () => {
                                 onClick={() =>
                                   openModerationModal(u, "clear_profile", "Inappropriate profile content cleared")
                                 }
-                                className="btn btn-xs btn-ghost text-xs text-base-content/50 hover:text-warning font-semibold gap-1"
+                                className="btn btn-xs bg-base-100 hover:bg-warning/15 border border-base-300 hover:border-warning/50 text-base-content hover:text-warning font-bold gap-1 shadow-2xs transition-all"
                               >
                                 <EyeOffIcon className="size-3" />
                                 <span>Wipe Bio/Pic</span>
@@ -1351,7 +1367,7 @@ const AdminPage = () => {
                           {isAdmin && (
                             <button
                               onClick={() => setDeleteConfirmUser(u)}
-                              className="btn btn-xs btn-ghost text-error hover:bg-error/10 font-bold gap-1"
+                              className="btn btn-xs bg-error/10 hover:bg-error text-error hover:text-error-content border border-error/30 font-bold gap-1 shadow-2xs transition-all"
                               title="Permanently remove account from database"
                             >
                               <Trash2Icon className="size-3" />
@@ -1370,7 +1386,7 @@ const AdminPage = () => {
                     <button
                       disabled={userPage <= 1}
                       onClick={() => setUserPage((p) => Math.max(1, p - 1))}
-                      className="btn btn-sm btn-ghost border border-base-300 hover:bg-base-200 text-base-content font-bold"
+                      className="btn btn-sm bg-base-100 hover:bg-base-200 border border-base-300 text-base-content font-bold shadow-2xs disabled:bg-base-200 disabled:text-base-content/30 disabled:border-base-300/40"
                     >
                       Previous
                     </button>
@@ -1380,7 +1396,7 @@ const AdminPage = () => {
                     <button
                       disabled={userPage >= usersData.totalPages}
                       onClick={() => setUserPage((p) => p + 1)}
-                      className="btn btn-sm btn-ghost border border-base-300 hover:bg-base-200 text-base-content font-bold"
+                      className="btn btn-sm bg-base-100 hover:bg-base-200 border border-base-300 text-base-content font-bold shadow-2xs disabled:bg-base-200 disabled:text-base-content/30 disabled:border-base-300/40"
                     >
                       Next
                     </button>
@@ -1493,10 +1509,10 @@ const AdminPage = () => {
                     <button
                       key={f.id}
                       onClick={() => setRoomFilterStatus(f.id)}
-                      className={`btn btn-xs rounded-xl font-bold whitespace-nowrap ${
+                      className={`btn btn-xs rounded-xl font-bold whitespace-nowrap transition-all ${
                         roomFilterStatus === f.id
                           ? "btn-primary text-primary-content shadow-xs"
-                          : "btn-ghost text-base-content/70 hover:text-base-content hover:bg-base-200"
+                          : "bg-base-100 hover:bg-base-300 border border-base-300 text-base-content hover:text-base-content"
                       }`}
                     >
                       {f.label}
@@ -1506,7 +1522,7 @@ const AdminPage = () => {
                   <button
                     onClick={() => refetchRooms()}
                     disabled={isRefetchingRooms}
-                    className="btn btn-xs btn-ghost border border-base-300 hover:border-primary hover:bg-base-200 text-base-content hover:text-primary font-bold gap-1 ml-1"
+                    className="btn btn-xs bg-base-100 hover:bg-base-200 border border-base-300 hover:border-primary text-base-content hover:text-primary font-bold gap-1 ml-1 shadow-2xs transition-all"
                     title="Refresh rooms list"
                   >
                     <RefreshCwIcon className={`size-3 ${isRefetchingRooms ? "animate-spin text-primary" : ""}`} />
@@ -1630,7 +1646,7 @@ const AdminPage = () => {
                           ) : (
                             <button
                               onClick={() => setDeleteConfirmRoom(room)}
-                              className="btn btn-xs sm:btn-sm btn-error btn-outline font-bold gap-1.5"
+                              className="btn btn-xs sm:btn-sm btn-error text-error-content font-bold gap-1.5 shadow-2xs hover:brightness-110 transition-all"
                               title="Delete and close room immediately"
                             >
                               <Trash2Icon className="size-3.5" />
