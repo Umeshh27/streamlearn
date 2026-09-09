@@ -8,7 +8,7 @@ export const useVerifyEmail = () => {
   const verifyMutation = useMutation({
     mutationFn: verifyEmail,
     onSuccess: () => {
-      toast.success("Email verified! Welcome to Streamify.");
+      toast.success("Email verified! Welcome to LangBridge.");
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
     onError: (err) => {
