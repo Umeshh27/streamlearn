@@ -1,11 +1,9 @@
 import axios from "axios";
 
-const BASE_URL =
-  import.meta.env.MODE === "development"
-    ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-    : "/api";
-
+// In development, Vite proxies '/api' to 'http://localhost:5000/api'.
+// In production, Express directly serves '/api'.
+// Using same-origin relative '/api' ensures session cookies are never blocked or dropped on refresh.
 export const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: "/api",
   withCredentials: true, // send cookies with the request
 });
