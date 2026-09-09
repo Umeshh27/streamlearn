@@ -82,7 +82,7 @@ const SignUpPage = () => {
           <div className="mb-6 flex items-center justify-start gap-2.5">
             <ShipWheelIcon className="size-8 text-primary" />
             <span className="text-2xl sm:text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-              Streamify
+              LangBridge
             </span>
           </div>
 
@@ -96,7 +96,7 @@ const SignUpPage = () => {
                       Create an Account
                     </h2>
                     <p className="text-sm text-base-content/60 mt-1">
-                      Join Streamify and start practicing languages worldwide!
+                      Join LangBridge and start practicing languages worldwide!
                     </p>
                   </div>
 
@@ -288,7 +288,7 @@ const SignUpPage = () => {
             <div className="rounded-2xl overflow-hidden shadow-xl border border-base-300/60 bg-base-100">
               <img
                 src="/rules-community.jpg"
-                alt="Streamify Global Language Community"
+                alt="LangBridge Global Language Community"
                 className="w-full h-auto object-cover"
               />
             </div>
