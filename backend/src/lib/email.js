@@ -29,7 +29,7 @@ const createTransporter = () => {
 };
 
 /**
- * Generates the responsive, branded HTML email template for Streamify verification.
+ * Generates the responsive, branded HTML email template for LangBridge verification.
  */
 const getVerificationEmailHtml = (code, fullName = "Learner") => {
   return `
@@ -38,7 +38,7 @@ const getVerificationEmailHtml = (code, fullName = "Learner") => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify your Streamify Email</title>
+  <title>Verify your LangBridge Email</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -131,11 +131,11 @@ const getVerificationEmailHtml = (code, fullName = "Learner") => {
 <body>
   <div class="wrapper">
     <div class="header">
-      <h1>Streamify</h1>
+      <h1>LangBridge</h1>
       <p>Global Language Exchange & Community</p>
     </div>
     <div class="content">
-      <div class="greeting">Welcome to Streamify, ${fullName}!</div>
+      <div class="greeting">Welcome to LangBridge, ${fullName}!</div>
       <p class="text">
         Thank you for joining our language learning community. To confirm that you are a genuine user and activate your account, please enter the 6-digit verification code below:
       </p>
@@ -146,15 +146,15 @@ const getVerificationEmailHtml = (code, fullName = "Learner") => {
       </div>
 
       <div class="notice">
-        <strong>Security Notice:</strong> Never share this verification code with anyone. Streamify team members will never ask for your code or password.
+        <strong>Security Notice:</strong> Never share this verification code with anyone. LangBridge team members will never ask for your code or password.
       </div>
 
       <p class="text" style="margin-bottom: 0;">
-        If you did not sign up for a Streamify account, you can safely ignore this email.
+        If you did not sign up for a LangBridge account, you can safely ignore this email.
       </p>
     </div>
     <div class="footer">
-      &copy; ${new Date().getFullYear()} Streamify. Dedicated to safe, respectful language learning for ages 14+.
+      &copy; ${new Date().getFullYear()} LangBridge. Dedicated to safe, respectful language learning for ages 14+.
     </div>
   </div>
 </body>
@@ -171,7 +171,7 @@ export const sendVerificationEmail = async ({ email, code, fullName = "Learner" 
 
   // Highlighted console log for seamless development & verification
   console.log("──────────────────────────────────────────────────");
-  console.log(`📧 [STREAMIFY VERIFICATION CODE]`);
+  console.log(`📧 [LANGBRIDGE VERIFICATION CODE]`);
   console.log(`To:   ${email} (${fullName})`);
   console.log(`Code: >>> ${code} <<<`);
   console.log(`Expires in: 15 minutes`);
@@ -185,13 +185,13 @@ export const sendVerificationEmail = async ({ email, code, fullName = "Learner" 
   }
 
   try {
-    const fromAddress = process.env.EMAIL_FROM || `"Streamify" <${process.env.EMAIL_USER}>`;
+    const fromAddress = process.env.EMAIL_FROM || `"LangBridge" <${process.env.EMAIL_USER}>`;
 
     const info = await transporter.sendMail({
       from: fromAddress,
       to: email,
-      subject: `Streamify: Your Verification Code is ${code}`,
-      text: `Welcome to Streamify, ${fullName}!\n\nYour 6-digit verification code is: ${code}\n\nThis code will expire in 15 minutes.\n\nIf you did not request this, please ignore this email.`,
+      subject: `LangBridge: Your Verification Code is ${code}`,
+      text: `Welcome to LangBridge, ${fullName}!\n\nYour 6-digit verification code is: ${code}\n\nThis code will expire in 15 minutes.\n\nIf you did not request this, please ignore this email.`,
       html: getVerificationEmailHtml(code, fullName),
     });
 
