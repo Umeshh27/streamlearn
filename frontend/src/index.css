@@ -390,96 +390,154 @@ main:has(.str-chat) {
    DAISYUI MULTI-THEME CONTRAST & HOVER ACCESSIBILITY GUARANTEES
    ========================================================================== */
 
+/* 1. Ensure outline buttons display their thematic color and border when idle */
+.btn-outline.btn-primary:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--p) / 1) !important;
+  border-color: oklch(var(--p) / 0.8) !important;
+  background-color: transparent !important;
+}
+.btn-outline.btn-secondary:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--s) / 1) !important;
+  border-color: oklch(var(--s) / 0.8) !important;
+  background-color: transparent !important;
+}
+.btn-outline.btn-accent:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--a) / 1) !important;
+  border-color: oklch(var(--a) / 0.8) !important;
+  background-color: transparent !important;
+}
+.btn-outline.btn-success:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--su) / 1) !important;
+  border-color: oklch(var(--su) / 0.8) !important;
+  background-color: transparent !important;
+}
+.btn-outline.btn-warning:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--wa) / 1) !important;
+  border-color: oklch(var(--wa) / 0.8) !important;
+  background-color: transparent !important;
+}
+.btn-outline.btn-error:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--er) / 1) !important;
+  border-color: oklch(var(--er) / 0.8) !important;
+  background-color: transparent !important;
+}
+.btn-outline.btn-info:not(:hover):not(:disabled):not([disabled]):not(.btn-disabled) {
+  color: oklch(var(--in) / 1) !important;
+  border-color: oklch(var(--in) / 0.8) !important;
+  background-color: transparent !important;
+}
 
-/* 1. Ensure outline button hover states ALWAYS use their theme-defined legible content colors */
-.btn-outline.btn-primary:hover {
+/* 2. Ensure outline button hover states ALWAYS use their theme-defined legible content colors */
+.btn-outline.btn-primary:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--p) / 1) !important;
+  border-color: oklch(var(--p) / 1) !important;
   color: oklch(var(--pc) / 1) !important;
 }
-.btn-outline.btn-secondary:hover {
+.btn-outline.btn-secondary:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--s) / 1) !important;
+  border-color: oklch(var(--s) / 1) !important;
   color: oklch(var(--sc) / 1) !important;
 }
-.btn-outline.btn-accent:hover {
+.btn-outline.btn-accent:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--a) / 1) !important;
+  border-color: oklch(var(--a) / 1) !important;
   color: oklch(var(--ac) / 1) !important;
 }
-.btn-outline.btn-success:hover {
+.btn-outline.btn-success:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--su) / 1) !important;
+  border-color: oklch(var(--su) / 1) !important;
   color: oklch(var(--suc) / 1) !important;
 }
-.btn-outline.btn-warning:hover {
+.btn-outline.btn-warning:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--wa) / 1) !important;
+  border-color: oklch(var(--wa) / 1) !important;
   color: oklch(var(--wac) / 1) !important;
 }
-.btn-outline.btn-error:hover {
+.btn-outline.btn-error:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--er) / 1) !important;
+  border-color: oklch(var(--er) / 1) !important;
   color: oklch(var(--erc) / 1) !important;
 }
-.btn-outline.btn-info:hover {
+.btn-outline.btn-info:hover:not(:disabled):not([disabled]):not(.btn-disabled) {
+  background-color: oklch(var(--in) / 1) !important;
+  border-color: oklch(var(--in) / 1) !important;
   color: oklch(var(--inc) / 1) !important;
 }
 
-/* 2. Prevent neutral outline buttons from becoming invisible when hovered with base backgrounds */
+/* 3. Prevent neutral outline buttons from becoming invisible when hovered with base backgrounds */
 .btn-outline:not(.btn-primary):not(.btn-secondary):not(.btn-accent):not(.btn-success):not(.btn-warning):not(.btn-error):not(.btn-info)[class*="hover:bg-base-"]:hover,
 .btn-outline:not(.btn-primary):not(.btn-secondary):not(.btn-accent):not(.btn-success):not(.btn-warning):not(.btn-error):not(.btn-info)[class*="hover:text-base-content"]:hover {
   color: oklch(var(--bc) / 1) !important;
 }
 
-/* 3. Ensure primary, secondary, accent, error, warning, success buttons ALWAYS guarantee readable text color across all themes and active states */
-.btn-primary:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-primary:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-primary:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-primary:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+/* 4. Ensure solid primary, secondary, accent, error, warning, success buttons ALWAYS guarantee readable text color across all themes */
+.btn-primary:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-primary:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-primary:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-primary:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--pc) / 1) !important;
 }
-.btn-secondary:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-secondary:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-secondary:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-secondary:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-secondary:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-secondary:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-secondary:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-secondary:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--sc) / 1) !important;
 }
-.btn-accent:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-accent:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-accent:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-accent:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-accent:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-accent:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-accent:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-accent:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--ac) / 1) !important;
 }
-.btn-neutral:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-neutral:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-neutral:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-neutral:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-neutral:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-neutral:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-neutral:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-neutral:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--nc) / 1) !important;
 }
-.btn-warning:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-warning:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-warning:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-warning:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-warning:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-warning:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-warning:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-warning:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--wac) / 1) !important;
 }
-.btn-error:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-error:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-error:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-error:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-error:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-error:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-error:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-error:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--erc) / 1) !important;
 }
-.btn-success:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-success:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-success:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-success:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-success:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-success:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-success:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-success:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--suc) / 1) !important;
 }
-.btn-info:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-info:hover:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-info:focus:not(:disabled):not([disabled]):not(.btn-disabled),
-.btn-info:active:not(:disabled):not([disabled]):not(.btn-disabled) {
+.btn-info:not(.btn-outline):not(.btn-ghost):not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-info:not(.btn-outline):not(.btn-ghost):hover:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-info:not(.btn-outline):not(.btn-ghost):focus:not(:disabled):not([disabled]):not(.btn-disabled),
+.btn-info:not(.btn-outline):not(.btn-ghost):active:not(:disabled):not([disabled]):not(.btn-disabled) {
   color: oklch(var(--inc) / 1) !important;
 }
+
+/* 5. Ghost button text contrast */
 .btn-ghost:not([class*="hover:text-"]):not(:disabled):not([disabled]):not(.btn-disabled):hover {
   color: oklch(var(--bc) / 1) !important;
 }
 .btn-ghost[class*="hover:text-error"]:not(:disabled):not([disabled]):not(.btn-disabled):hover {
-  color: oklch(var(--erc) / 1) !important;
+  color: oklch(var(--er) / 1) !important;
 }
 .btn-ghost[class*="hover:text-primary"]:not(:disabled):not([disabled]):not(.btn-disabled):hover {
-  color: oklch(var(--pc) / 1) !important;
+  color: oklch(var(--p) / 1) !important;
 }
 
-/* 4. Universal Disabled Button & Form Element Contrast Guarantee Across All DaisyUI Themes */
+/* 6. Universal SVG icon color inheritance inside buttons */
+.btn svg {
+  color: inherit !important;
+  stroke: currentColor !important;
+}
+
+/* 7. Universal Disabled Button & Form Element Contrast Guarantee Across All DaisyUI Themes */
 .btn:disabled,
 .btn[disabled],
 .btn-disabled,
@@ -503,41 +561,105 @@ main:has(.str-chat) {
   stroke: currentColor !important;
 }
 
-/* 5. Ensure badge text colors match their contrasting theme content colors */
-.badge-primary {
+/* 8. Ensure solid badge text colors match their contrasting theme content colors */
+.badge-primary:not(.badge-outline) {
   background-color: oklch(var(--p) / 1) !important;
   color: oklch(var(--pc) / 1) !important;
 }
-.badge-secondary {
+.badge-secondary:not(.badge-outline) {
   background-color: oklch(var(--s) / 1) !important;
   color: oklch(var(--sc) / 1) !important;
 }
-.badge-accent {
+.badge-accent:not(.badge-outline) {
   background-color: oklch(var(--a) / 1) !important;
   color: oklch(var(--ac) / 1) !important;
 }
-.badge-warning {
+.badge-warning:not(.badge-outline) {
   background-color: oklch(var(--wa) / 1) !important;
   color: oklch(var(--wac) / 1) !important;
 }
-.badge-error {
+.badge-error:not(.badge-outline) {
   background-color: oklch(var(--er) / 1) !important;
   color: oklch(var(--erc) / 1) !important;
 }
-.badge-success {
+.badge-success:not(.badge-outline) {
   background-color: oklch(var(--su) / 1) !important;
   color: oklch(var(--suc) / 1) !important;
 }
-.badge-info {
+.badge-info:not(.badge-outline) {
   background-color: oklch(var(--in) / 1) !important;
   color: oklch(var(--inc) / 1) !important;
 }
-.badge-neutral {
+.badge-neutral:not(.badge-outline) {
   background-color: oklch(var(--n) / 1) !important;
   color: oklch(var(--nc) / 1) !important;
 }
 
-/* 6. Dropdown item active/hover text contrast */
+/* 9. Outline badges retain transparency with legible borders & text */
+.badge-outline {
+  background-color: transparent !important;
+  color: oklch(var(--bc) / 0.9) !important;
+  border-color: oklch(var(--bc) / 0.3) !important;
+}
+.badge-outline.badge-primary {
+  color: oklch(var(--p) / 1) !important;
+  border-color: oklch(var(--p) / 0.7) !important;
+}
+.badge-outline.badge-secondary {
+  color: oklch(var(--s) / 1) !important;
+  border-color: oklch(var(--s) / 0.7) !important;
+}
+.badge-outline.badge-accent {
+  color: oklch(var(--a) / 1) !important;
+  border-color: oklch(var(--a) / 0.7) !important;
+}
+.badge-outline.badge-error {
+  color: oklch(var(--er) / 1) !important;
+  border-color: oklch(var(--er) / 0.7) !important;
+}
+.badge-outline.badge-warning {
+  color: oklch(var(--wa) / 1) !important;
+  border-color: oklch(var(--wa) / 0.7) !important;
+}
+.badge-outline.badge-success {
+  color: oklch(var(--su) / 1) !important;
+  border-color: oklch(var(--su) / 0.7) !important;
+}
+.badge-outline.badge-info {
+  color: oklch(var(--in) / 1) !important;
+  border-color: oklch(var(--in) / 0.7) !important;
+}
+
+/* 10. Inputs, Textareas, Selects text contrast */
+input.input,
+select.select,
+textarea.textarea {
+  color: oklch(var(--bc) / 1) !important;
+}
+input.input::placeholder,
+textarea.textarea::placeholder {
+  color: oklch(var(--bc) / 0.5) !important;
+}
+
+/* 11. Alerts contrast guarantees across all themes */
+.alert-warning {
+  background-color: oklch(var(--wa) / 1) !important;
+  color: oklch(var(--wac) / 1) !important;
+}
+.alert-error {
+  background-color: oklch(var(--er) / 1) !important;
+  color: oklch(var(--erc) / 1) !important;
+}
+.alert-info {
+  background-color: oklch(var(--in) / 1) !important;
+  color: oklch(var(--inc) / 1) !important;
+}
+.alert-success {
+  background-color: oklch(var(--su) / 1) !important;
+  color: oklch(var(--suc) / 1) !important;
+}
+
+/* 12. Dropdown item active/hover text contrast */
 .dropdown-content button:hover,
 .dropdown-content a:hover {
   background-color: oklch(var(--b3) / 0.7) !important;

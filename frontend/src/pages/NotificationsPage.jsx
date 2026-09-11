@@ -272,7 +272,7 @@ const NotificationsPage = () => {
                     <button
                       onClick={() => handleStaffResponse("reject")}
                       disabled={isProcessingStaffInvite}
-                      className="btn btn-outline btn-error font-bold gap-1.5 h-10 sm:h-9 flex-1 sm:flex-none justify-center active:scale-95 transition-all"
+                      className="btn btn-outline btn-error hover:bg-error hover:text-error-content font-bold gap-1.5 h-10 sm:h-9 flex-1 sm:flex-none justify-center active:scale-95 transition-all shadow-2xs"
                     >
                       <XIcon className="size-4" />
                       <span>Decline</span>
@@ -351,7 +351,7 @@ const NotificationsPage = () => {
                             {/* Accept & Decline Action Buttons */}
                             <div className="flex items-center gap-2 w-full sm:w-auto pt-2 border-t border-base-300/60 sm:border-t-0 sm:pt-0 sm:justify-end">
                               <button
-                                className="btn btn-outline btn-error btn-sm font-bold gap-1.5 flex-1 sm:flex-none justify-center h-9 sm:h-8 active:scale-95 transition-all"
+                                className="btn btn-outline btn-error hover:bg-error hover:text-error-content btn-sm font-bold gap-1.5 flex-1 sm:flex-none justify-center h-9 sm:h-8 active:scale-95 transition-all shadow-2xs"
                                 onClick={() => handleDecline(request._id)}
                                 disabled={isProcessing}
                               >

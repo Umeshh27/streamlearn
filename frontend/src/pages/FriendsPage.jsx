@@ -394,7 +394,7 @@ const FriendsPage = () => {
                               handleUnfriendUser(friend._id);
                             }}
                             disabled={isThisUnfriending}
-                            className="btn btn-outline btn-error font-bold btn-sm gap-1 shrink-0"
+                            className="btn btn-outline btn-error hover:bg-error hover:text-error-content font-bold btn-sm gap-1 shrink-0 transition-colors shadow-2xs"
                             title="Unfriend this user"
                           >
                             {isThisUnfriending ? (

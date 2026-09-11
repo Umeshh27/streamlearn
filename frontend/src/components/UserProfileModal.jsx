@@ -989,7 +989,7 @@ const UserProfileModal = ({ userId, onClose, initialEditMode = false }) => {
                     <button
                       onClick={() => unfriendMutation()}
                       disabled={isUnfriending}
-                      className="btn btn-outline btn-error flex-1 gap-1.5 font-bold btn-sm sm:btn-md"
+                      className="btn btn-outline btn-error hover:bg-error hover:text-error-content flex-1 gap-1.5 font-bold btn-sm sm:btn-md transition-colors shadow-2xs"
                     >
                       {isUnfriending ? (
                         <span className="loading loading-spinner loading-xs" />
