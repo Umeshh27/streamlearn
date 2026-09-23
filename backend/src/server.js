@@ -30,6 +30,15 @@ const server = http.createServer(app);
 // Mount Live WebSocket handler for Voice Assistant & Live features
 setupWebSocketServer(server);
 
+// Canonical Redirect: Automatically forward traffic from onrender.com to custom domain
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  if (host && host.includes("onrender.com")) {
+    return res.redirect(301, `https://langbridge.umeshh.me${req.originalUrl}`);
+  }
+  next();
+});
+
 app.use(
   cors({
     origin: true,
