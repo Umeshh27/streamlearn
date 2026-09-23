@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 /**
  * Creates and returns a Nodemailer transporter based on environment variables.
@@ -17,13 +18,16 @@ const createTransporter = () => {
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT) || 587,
       secure: process.env.SMTP_PORT === "465",
+      pool: true,
       auth: { user, pass },
     });
   }
 
-  // Default to standard service (e.g. Gmail)
+  // Default to standard service (e.g. Gmail) with connection pooling
   return nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE || "gmail",
+    pool: true,
+    maxConnections: 3,
     auth: { user, pass },
   });
 };
@@ -164,12 +168,11 @@ const getVerificationEmailHtml = (code, fullName = "Learner") => {
 
 /**
  * Sends a 6-digit verification email to the user.
- * Falls back gracefully to console logging in development or if SMTP is not configured.
+ * Prioritizes Resend (ultra-fast transactional API) if RESEND_API_KEY is configured,
+ * with seamless fallback to Nodemailer (Gmail / SMTP) and console logging.
  */
 export const sendVerificationEmail = async ({ email, code, fullName = "Learner" }) => {
-  const transporter = createTransporter();
-
-  // Highlighted console log for seamless development & verification
+  // Always log to server terminal for instant fallback/testing
   console.log("──────────────────────────────────────────────────");
   console.log(`📧 [LANGBRIDGE VERIFICATION CODE]`);
   console.log(`To:   ${email} (${fullName})`);
@@ -177,9 +180,51 @@ export const sendVerificationEmail = async ({ email, code, fullName = "Learner" 
   console.log(`Expires in: 15 minutes`);
   console.log("──────────────────────────────────────────────────");
 
+  const resendApiKey = process.env.RESEND_API_KEY?.trim();
+
+  // 1. Prioritize Resend if configured (sub-second transactional delivery)
+  if (resendApiKey) {
+    try {
+      const resend = new Resend(resendApiKey);
+
+      // Default to onboarding@resend.dev (works immediately for testing) or custom domain
+      let fromAddress = process.env.RESEND_FROM?.trim();
+      if (!fromAddress) {
+        const configuredFrom = process.env.EMAIL_FROM?.trim();
+        if (configuredFrom && !configuredFrom.toLowerCase().includes("@gmail.com")) {
+          fromAddress = configuredFrom;
+        } else {
+          fromAddress = "LangBridge <onboarding@resend.dev>";
+        }
+      }
+
+      const { data, error } = await resend.emails.send({
+        from: fromAddress,
+        to: [email],
+        subject: `LangBridge: Your Verification Code is ${code}`,
+        text: `Welcome to LangBridge, ${fullName}!\n\nYour 6-digit verification code is: ${code}\n\nThis code will expire in 15 minutes.\n\nIf you did not request this, please ignore this email.`,
+        html: getVerificationEmailHtml(code, fullName),
+      });
+
+      if (error) {
+        console.error("[Resend] Error sending email via Resend:", error);
+        // Fall through to Nodemailer fallback below
+      } else {
+        console.log(`[Resend] Verification email delivered to ${email} (ID: ${data.id})`);
+        return { success: true, messageId: data.id, mode: "resend" };
+      }
+    } catch (resendErr) {
+      console.error("[Resend] Unexpected error in Resend client:", resendErr.message || resendErr);
+      // Fall through to Nodemailer fallback
+    }
+  }
+
+  // 2. Fall back to Nodemailer (Gmail / SMTP) if configured
+  const transporter = createTransporter();
+
   if (!transporter) {
     console.warn(
-      "[Nodemailer] EMAIL_USER and EMAIL_PASS not configured in backend/.env. Using console fallback above for testing."
+      "[Email Service] Neither RESEND_API_KEY nor EMAIL_USER/EMAIL_PASS configured. Using console fallback above."
     );
     return { success: true, mode: "console_fallback" };
   }

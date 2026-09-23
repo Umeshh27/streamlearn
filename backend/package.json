@@ -23,6 +23,7 @@
     "msedge-tts": "^2.0.7",
     "nodemailer": "^10.0.0",
     "openai": "^7.4.0",
+    "resend": "^6.28.1",
     "stream-chat": "^8.60.0",
     "ws": "^8.18.0"
   },
